@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head'); %>
+	</head>
+	<body>
+		<%- include('../partials/header', {changeModal: {buttonId: "addCate", modalId: "#addCateModal"}}); %>
+
+		<div class="container-fluid">
+			<div class="row">
+				<%- include('../partials/sidebar', {text: text}); %>
+
+				<%- include('../partials/cate-view'); %>
+			</div>
+		</div>
+		<footer>
+			<%- include('../partials/footer'); %>
+		</footer>
+		<%- include('../partials/modals/categories'); %>
+	</body>
+	<%- include('../partials/scripts'); %>
+	<script src='/js/categories/categories.js'></script>
+</html>

@@ -1,0 +1,77 @@
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="container-fluid p-0 pt-3">
+        <div class="row mb-4">
+            <div id="editWalletForm">
+                <div class="container-fluid p-0">
+                    <div class="row">
+                        <div class="col-md-6 col-12 mb-3">
+                            <div class="form-group">
+                                <label for="FormControlNome">Nome</label>
+                                <input type="text" class="form-control" id="FormControlNome" data-w-name placeholder="name@example.com">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 mb-3">
+                            <div class="form-group">
+                                <label for="FormControlTotale">Totale</label>
+                                <input type="number" class="form-control" id="FormControlTotale" data-w-total placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 mb-3">
+                            <div class="form-group">
+                                <label for="FormControlIcona">Icona</label>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle my w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Scegli l'icona
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1"></div>
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 mb-3">
+                            <div class="form-group">
+                                <label for="FormControlVisualizza">Visualizza</label>
+                                <div id="FormControlVisualizza" data-w-icon class="fs-2"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 mb-3">
+                            <div class="form-group">
+                                <label for="FormControlScadenza">Scadenza</label>
+                                <input type="month" class="form-control" id="FormControlScadenza" data-w-valid placeholder="05-2021">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 mb-3">
+                            <div class="container-fluid p-0 h-100">
+                                <div class="row h-100 align-items-center">
+                                    <div class="col-6 text-center">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" data-w-utility value="" id="FormControlUtilizzabile" checked>
+                                          <label class="form-check-label" for="FormControlUtilizzabile">
+                                            utilizzabile
+                                          </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <button type="submit" class="btn btn-warning" id="editWallet">Aggiorna</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7 col-12">
+                <div class="container-fluid p-0" id="wallet"></div>
+            </div>
+            <div class="col-md-5 col-12">
+                <div id="wallets_container">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                      <h1 class="h5">Grafico utilizzi tipologie <span class="total"></span></h1>
+                    </div>
+                    <canvas class="my-4 w-100 h-100" id="walletChart"></canvas>
+                  </div>
+            </div>
+        </div>
+    </div>
+</main>

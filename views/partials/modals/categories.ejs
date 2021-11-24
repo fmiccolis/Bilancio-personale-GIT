@@ -1,0 +1,54 @@
+<div class="modal fade" id="addCateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEditCategoryTitle">Nuova Categoria</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type='hidden' class='hiddenId' value='' />
+          <div class="continer-fluid">
+            <div class="row">
+              <div class="col-md-6 col-12 mb-3">
+                <label for="nomeInput" class="form-label">Nome</label>
+                <input type="text" name="nome" class="form-control" id="nomeInput" aria-describedby="nomeHelp">
+                <div id="nomeHelp" class="form-text">Scegli il nome per la nuova categoria.</div>
+              </div>
+              <div class="col-md-6 col-12 mb-3">
+                <label for="iconaInput" class="form-label">Icona</label>
+                <div class="dropdown">
+                  <button class="btn btn-outline-secondary w-100 dropdown-toggle my" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Scegli l'icona
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1"></div>
+                </div>
+                <div id="iconaHelp" class="form-text">Inserisci l'icona, tramite tag HTML, della categoria. Visita <a href="https://fontawesome.com/" target="_blank">Font Awesome</a> per trovare quella più corretta</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-12 mb-3">
+                <label for="coloreInput" class="form-label">Colore</label>
+                <input type="color" name="colore" class="form-control" id="coloreInput" aria-describedby="coloreHelp">
+                <div id="coloreHelp" class="form-text">Scegli il colore della categoria. Verrà utilizzato nei grafici.</div>
+              </div>
+              <div class="col-md-6 col-12 mb-3 text-center">
+                <label for="visualizzazione" class="form-label">Visualizza</label>
+                <div id="visualizzazione" class="w-100 text-center fs-1"></div>
+                <div id="nomeHelp" class="form-text">Qui è come apparirebbe l'icona della categoria.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <div class="float-start">
+            <button type='button' id="deleteCate" class='btn btn-danger'>Elimina</button>
+          </div>
+          <div class="float-end">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            <button type="submit" id="addNewCate" class="btn btn-primary">Invia</button>
+            <button type="submit" id="editCate" class="btn btn-warning" style="display: none;">Modifica</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

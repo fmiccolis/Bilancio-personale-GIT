@@ -1,0 +1,65 @@
+<div class="modal fade" id="addWalletModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addWalletModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEditWalletTitle">Nuovo Portafogli</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type='hidden' class='hiddenId' value='' />
+          <div class="continer-fluid">
+            <div class="row">
+              <div class="col-md-6 col-12 mb-3">
+                <label for="nomeInput" class="form-label">Nome</label>
+                <input type="text" name="nome" class="form-control" id="nomeInput" aria-describedby="nomeHelp">
+                <div id="nomeHelp" class="form-text">Scegli il nome per il nuovo portafogli.</div>
+              </div>
+              <div class="col-md-6 col-12 mb-3">
+                <label for="totaleInput" class="form-label">Totale</label>
+                <input type="number" name="totale" class="form-control" id="totaleInput" aria-describedby="totaleHelp">
+                <div id="totaleHelp" class="form-text">Inserisci il totale attuale di questo portafogli.</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-12 mb-3">
+                <label for="iconaInput" class="form-label">Icona</label>
+                <div class="dropdown">
+                  <button class="btn btn-outline-secondary dropdown-toggle my w-100" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Scegli l'icona
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1"></div>
+                </div>
+                <div id="iconaHelp" class="form-text">Inserisci l'icona, tramite tag HTML, per il portafogli. Visita <a href="https://fontawesome.com/" target="_blank">Font Awesome</a> per trovare quella più corretta</div>
+              </div>
+              <div class="col-md-6 col-12 mb-3">
+                <label for="scadenzaInput" class="form-label">Scadenza</label>
+                <input type="month" name="icona" class="form-control" id="scadenzaInput" aria-describedby="scadenzaHelp">
+                <div id="scadenzaHelp" class="form-text">Inserisci la scadenza, se presente, del portafogli.</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-12 mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="utilizzabileInput" aria-describedby="utilizzabileHelp" checked>
+                  <label class="form-check-label" for="utilizzabileInput">
+                    utilizzabile
+                  </label>
+                </div>
+                <div id="utilizzabileHelp" class="form-text">Scegli se il portafoglio è direttamente utilizzabile per i movimenti.</div>
+              </div>
+              <div class="col-md-6 col-12 mb-3">
+                <label for="visualizzazione" class="form-label">Visualizza</label>
+                <div id="visualizzazione" class="w-100 text-center fs-1"></div>
+                <div id="visualizzazioneHelp" class="form-text">Qui è come apparirebbe l'icona del portafogli.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <button type="submit" id="addNewWallet" class="btn btn-primary">Invia</button>
+          <button type="submit" id="editWallet" class="btn btn-warning" style="display: none;">Modifica</button>
+        </div>
+      </div>
+    </div>
+</div>

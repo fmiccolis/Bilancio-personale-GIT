@@ -1,0 +1,455 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+body {
+    font-size: .875rem;
+}
+
+canvas {
+	max-width: 600px;
+	max-height: 500px;
+	margin: auto;
+}
+  
+  /*
+   * Sidebar
+   */
+  
+.sidebar {
+    position: fixed;
+    top: 0;
+    /* rtl:raw:
+    right: 0;
+    */
+    bottom: 0;
+    /* rtl:remove */
+    left: 0;
+    z-index: 100; /* Behind the navbar */
+    padding: 48px 0 0; /* Height of navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+  
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+  
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+}
+  
+.sidebar .nav-link .feather {
+    margin-right: 4px;
+    color: #727272;
+}
+  
+.sidebar .nav-link.active {
+    color: #2470dc;
+}
+  
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+    color: inherit;
+}
+  
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+}
+  
+.btn-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, .65);
+    background-color: transparent;
+    border: 0;
+}
+
+.btn-toggle:hover,
+.btn-toggle:focus {
+    color: rgba(0, 0, 0, .85);
+    background-color: #d2f4ea;
+}
+    
+.btn-toggle::before {
+    width: 1.25em;
+    line-height: 0;
+    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+    transition: transform .35s ease;
+    transform-origin: .5em 50%;
+}
+    
+.btn-toggle[aria-expanded="true"] {
+    color: rgba(0, 0, 0, .85);
+}
+
+.btn-toggle[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+}
+    
+.btn-toggle-nav a {
+    display: inline-flex;
+    padding: .1875rem .5rem;
+    margin-top: .125rem;
+    margin-left: 1.25rem;
+    text-decoration: none;
+}
+
+.btn-toggle-nav a:hover,
+.btn-toggle-nav a:focus {
+    background-color: #d2f4ea;
+}
+  
+  /*
+   * Navbar
+   */
+  
+.navbar-brand {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, .25);
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+  
+.navbar .navbar-toggler {
+    top: .25rem;
+    right: 1rem;
+}
+  
+.navbar .form-control {
+    padding: .75rem 1rem;
+    border-width: 0;
+    border-radius: 0;
+}
+  
+.form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+  
+.form-control-dark:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+.active-custom {
+    background-color: #d2f4ea
+}
+
+tr > .year, tr > .month {
+    cursor: pointer;
+}
+
+tr > .year:hover, tr > .month:hover {
+    background-color: var(--bs-light);
+}
+
+.action {
+    cursor: pointer;
+}
+
+.custom-accordion-button {
+    padding: 0.5rem 0.61rem;
+    font-size: 0.875rem;
+}
+
+.infos {
+    display: flex;
+    margin-top: 1rem;
+    flex-direction: column;
+}
+
+.income, .outcome {
+    color: #289672;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    font-size: clamp(5px, 50% + 10px, 10px);
+}
+
+.outcome {
+    color: #dc3545;
+}
+
+.category-card:hover {
+    box-shadow: 2px 2px 5px 0px #41464b;
+    cursor: pointer;
+}
+
+#chartjs-tooltip {
+    pointer-events: none;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+}
+
+.nome-tooltip {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    line-height: 1.2;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    max-width: 20px;
+    max-height: 20px;
+    position: absolute;
+    top: 50px;
+    left: 15px;
+}
+
+.wallet-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+summary {
+    background-color: #fff;
+    position: relative;
+    cursor: pointer;
+    padding: 0 0.5em;
+    list-style: none;
+}
+summary::-webkit-details-marker {
+    display: none;
+}
+summary:hover {
+    background-color: #f2f5f9;
+}
+summary div {
+    display: flex;
+    align-items: center;
+}
+summary h4 {
+   margin-top: 0.25em;
+   margin-bottom: 0.25em;
+   display: flex;
+   flex-direction: column;
+   max-width: 50%;
+   font-size: 1.1em;
+}
+summary small {
+    color: #999;
+    font-size: 0.875em;
+    text-overflow: ellipsis;
+   overflow: hidden;
+   display: inline-block;
+   white-space: nowrap;
+}
+summary strong {
+   text-overflow: ellipsis;
+   overflow: hidden;
+   display: inline-block;
+   white-space: nowrap;
+   font-weight: 700;
+}
+summary span:first-child {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 10px;
+    background-color: #f3e1e1;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.25em;
+}
+summary span:first-child svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+summary span:last-child {
+    font-weight: 700;
+    margin-left: auto;
+}
+summary:focus {
+    outline: none;
+}
+summary .plus {
+    color: #289672;
+}
+details {
+    border-bottom: 1px solid #b5bfd9;
+    font-family: "Inter", sans-serif;
+}
+details[open] {
+    box-shadow: -3px 0 0 #b5bfd9;
+}
+details:first-of-type {
+    border-top: 1px solid #b5bfd9;
+}
+details > div {
+    padding: 2em 2em 0;
+    font-size: 0.875em;
+}
+dl {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+dl dt {
+    font-weight: 700;
+}
+
+.flex-centered {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-evenly {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.flex-evenly i {
+    flex: 1;
+    text-align: center;
+}
+
+.flex-so {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.flex-se {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-end;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.test-gradient {
+    background: linear-gradient(to bottom, rgba(255, 0, 0, 0.2) 0%, rgba(0, 255, 255, 0.2) 100%);
+}
+
+.wallet-link {
+    position: absolute;
+    bottom: .5rem;
+    right: .5rem;
+}
+
+.calendar {
+    border-radius: .5rem;
+    overflow: auto;
+    border: 1px solid gray;
+}
+
+.calendar-header {
+    background-color: crimson;
+    text-align: center;
+    padding: .5rem 0;
+    color: white;
+}
+
+.month-name {
+    font-size: 20px;
+    padding: .5rem 0;
+}
+
+.week-days {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.calendar-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.week {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.movement-box {
+    padding: .5rem;
+    display: none;
+}
+
+.day-box, .fake-box {
+    min-width: 14.2%;
+    width: 100%;
+    height: 100px;
+    max-width: 100px;
+    border: 1px solid gray;
+    border-collapse: collapse;
+    padding: .5rem;
+    text-align: end;
+    font-weight: 500;
+    position: relative;
+}
+
+.fake-box {
+    background-color: #adb5bd;
+}
+
+.day-box:hover {
+    background-color: #8888ff;
+    cursor: pointer;
+}
+
+.categories-box {
+    display: flex;
+    position: absolute;
+    width: 90%;
+    bottom: 5px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    overflow: hidden;
+}
+
+.today {
+    display: inline-block;
+    border: 3px solid #dc3545;
+    border-radius: 45% 50%;
+    padding: 0.125rem;
+}
+
+@media screen and (max-width: 767.98px) {
+    .sidebar {
+      top: 5rem;
+    }
+}

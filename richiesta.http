@@ -1,0 +1,32 @@
+POST /api/jsonws/PartnerRESTServices-portlet.appesterne/enable-active-purchase/ HTTP/1.1
+Host: localhost:8080
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJTYWxhYmFtIiwiYXVkIjoiT25lRmxleCIsInN1YiI6Ik1SQVJTUzc0QTY1QTI1OVoiLCJpYXQiOjE2MjQ1MTk0MDIsImV4cCI6MTYyNDUyMDMwMn0.UubZL9dJma78T5htCfxDHd4yioVijKeMEflwCvLcXOXiI7eu015HtYtq8J8d6yVR1tjh_1UkupZPUB9ln_Fkkhomj3mlkwGywqCaQogm7DUyFB-CdZlX8KamgxrdAor86i4raXG40xkca0hpn84hquqEG4eBbMjkfRk4VGC6KUAzW2zeffOcznAVXUVY0s8ZAyc8Pl6ArBD-6EaRnIHFxrzMDkoGE75axMGAO_FevtKA392R9yNcyjKKX4du5fMZTeJu4l0kgsnsBg77GR3QG_Im5YtnAbv98zNGPQMfRzJp056pz3vc-DlN6iTwzVYgNDSGLCDFRKe_-DaCtO--ug
+Cookie: GUEST_LANGUAGE_ID=it_IT; cookiesession1=678B287EFGHIJKLMNPQRSTUVWXYZ87E0
+Content-Length: 442
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="fiscalCode"
+Content-Length: 16
+Content-Type: text/plain
+
+MRARSS74A65A259Z
+----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="supplierName"
+Content-Length: 7
+Content-Type: text/plain
+
+Salabam
+----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="isLtcActive"
+Content-Length: 5
+Content-Type: text/plain
+
+false
+----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="isEnabledRelatives"
+Content-Length: 5
+Content-Type: text/plain
+
+false
+----WebKitFormBoundary7MA4YWxkTrZu0gW

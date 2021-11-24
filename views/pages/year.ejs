@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%- include('../partials/head'); %>
+	</head>
+	<body>
+		<%- include('../partials/header', {changeModal: {buttonId: "addMovement", modalId: "#addEditMovement"}}); %>
+
+		<div class="container-fluid">
+			<div class="row">
+				<%- include('../partials/sidebar', {text: text}); %>
+
+				<%- include('../partials/home'); %>
+			</div>
+		</div>
+		<footer>
+			<%- include('../partials/footer'); %>
+		</footer>
+		<%- include('../partials/modals/movements'); %>
+	</body>
+	<%- include('../partials/scripts'); %>
+	<script src='/js/movements/movements.js'></script>
+	<script src='/js/movements/year.js'></script>
+</html>
