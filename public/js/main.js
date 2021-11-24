@@ -91,6 +91,7 @@ const categoriaSelect = $("#categoria-select");
 var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
 
 $(document).ready(function() {
+	console.log("qui");
 	$("#dataInput").val((new Date()).toISOString().slice(0,10));
     getNavigation().then(data => {
         if(data.hasOwnProperty("empty")) {
