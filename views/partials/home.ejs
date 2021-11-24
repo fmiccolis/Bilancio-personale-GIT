@@ -20,7 +20,11 @@
             </div>
           </div>
           <% } %>
-          <div class="accordion" id="accordion"></div>
+          <% if(typeof changes != 'undefined' && changes) { %>
+            <div class="alert alert-warning" role="alert">
+              L'applicazione è stata aggiornata! Riavviala per rendere effettive le modifiche!
+            </div>
+          <% } %>
           <div class="table-responsive">
               <table id="detail" class="table table-striped table-sm"></table>
           </div>
