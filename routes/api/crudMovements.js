@@ -7,7 +7,6 @@ const crudMovementsRoutes = (app, fs) => {
 
     // READ ALL
     app.get(`/api/${apiTitle}/all`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         fs.readFile(paths.movements, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -28,7 +27,6 @@ const crudMovementsRoutes = (app, fs) => {
 
     // GET NAVIGATION
     app.get(`/api/${apiTitle}/getNavigation`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         try {
             var movements = JSON.parse(fs.readFileSync(paths.movements, 'utf8'));
             var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
@@ -45,7 +43,6 @@ const crudMovementsRoutes = (app, fs) => {
 
     // READ ELABORATED YEARS
     app.get(`/api/${apiTitle}/getElaboratedYears`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         try {
             var movements = JSON.parse(fs.readFileSync(paths.movements, 'utf8'));
             var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
@@ -63,7 +60,6 @@ const crudMovementsRoutes = (app, fs) => {
 
     // READ ELABORATED MONTHS
     app.get(`/api/${apiTitle}/getElaboratedMonths/:year`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         try {
             var year = req.params.year;
             var movements = JSON.parse(fs.readFileSync(paths.movements, 'utf8'));
@@ -82,7 +78,6 @@ const crudMovementsRoutes = (app, fs) => {
 
     // READ ELABORATED DAYS
     app.get(`/api/${apiTitle}/getElaboratedDays/:year/:month`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var year = req.params.year;
         var month = req.params.month;
         try {
@@ -104,7 +99,6 @@ const crudMovementsRoutes = (app, fs) => {
 
     // CREATE
     app.post(`/api/${apiTitle}/add`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var newMovement = req.body;
         var result = createMovement(newMovement, true, fs);
         res.status(200).send(result);
@@ -112,14 +106,12 @@ const crudMovementsRoutes = (app, fs) => {
 
     // UPDATE
     app.put(`/api/${apiTitle}/update/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = updateMovement(req.body, req.params["id"], fs);
         res.status(200).send(result);
     });
 
     // DELETE
     app.delete(`/api/${apiTitle}/delete/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = deleteMovement(req.params["id"], fs);
         res.status(200).send(result);
     });

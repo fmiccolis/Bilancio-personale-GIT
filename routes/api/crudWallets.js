@@ -7,7 +7,6 @@ const crudWalletsRoutes = (app, fs) => {
 
     // READ ALL
     app.get(`/api/${apiTitle}/all`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         fs.readFile(paths.wallets, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -31,7 +30,6 @@ const crudWalletsRoutes = (app, fs) => {
 
     // READ ONE
     app.get(`/api/${apiTitle}/getOne/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}/${req.params["id"]}`);
         fs.readFile(paths.wallets, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -58,7 +56,6 @@ const crudWalletsRoutes = (app, fs) => {
 
     // READ ELABORATED SINGLE
     app.get(`/api/${apiTitle}/getElaborated/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         try {
             var wallets = JSON.parse(fs.readFileSync(paths.wallets, 'utf8'));
             var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
@@ -77,7 +74,6 @@ const crudWalletsRoutes = (app, fs) => {
 
     // READ USABLE
     app.get(`/api/${apiTitle}/getUsable`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         try {
             var wallets = JSON.parse(fs.readFileSync(paths.wallets, 'utf8'));
             res.send(elaborateUsableWallets(wallets));
@@ -93,21 +89,18 @@ const crudWalletsRoutes = (app, fs) => {
 
     // CREATE
     app.post(`/api/${apiTitle}/add`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = createWallet(req.body, fs);
         res.status(200).send(result);
     });
 
     // UPDATE
     app.put(`/api/${apiTitle}/update/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = updateWallet(req.body, req.params["id"], fs);
         res.status(200).send(result);
     });
 
     // DELETE
     app.delete(`/api/${apiTitle}/delete/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = deleteWallet(req.params["id"], fs);
         res.status(200).send(result);
     });

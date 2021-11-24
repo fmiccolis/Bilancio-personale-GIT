@@ -25,6 +25,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(function (req, res, next) {
+	let time = new Date().toLocaleString("it-IT", { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+	console.log(`[${time}] chiamato ${req.originalUrl}`);
+	next();
+});
 
 const server = app.listen(3000, () => {
     console.log('listening on port %s...', server.address().port);

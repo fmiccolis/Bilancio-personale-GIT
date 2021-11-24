@@ -7,7 +7,6 @@ const crudTypesRoutes = (app, fs) => {
 
     // READ ALL
     app.get(`/api/${apiTitle}/all`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         fs.readFile(paths.recurrents, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -31,7 +30,6 @@ const crudTypesRoutes = (app, fs) => {
 
     // READ ONE
     app.get(`/api/${apiTitle}/getOne/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         fs.readFile(paths.recurrents, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -58,7 +56,6 @@ const crudTypesRoutes = (app, fs) => {
 
     // READ ELABORATED
     app.get(`/api/${apiTitle}/getElaborated`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         try {
             var wallets = JSON.parse(fs.readFileSync(paths.wallets, 'utf8'));
             var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
@@ -77,28 +74,24 @@ const crudTypesRoutes = (app, fs) => {
 
     // CREATE
     app.post(`/api/${apiTitle}/add`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = createRecurrent(req.body, fs);
         res.status(200).send(result);
     });
 
     // UPDATE
     app.put(`/api/${apiTitle}/update/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = updateRecurrent(req.body, req.params["id"], fs);
         res.status(200).send(result);
     });
 
     // UPDATE ABILITY
     app.put(`/api/${apiTitle}/ability/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = updateRecurrentAbility(req.params["id"], fs);
         res.status(200).send(result);
     });
 
     // DELETE
     app.delete(`/api/${apiTitle}/delete/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = deleteRecurrent(req.params["id"], fs);
         res.status(200).send(result);
     });

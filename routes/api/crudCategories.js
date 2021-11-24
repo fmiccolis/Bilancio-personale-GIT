@@ -7,7 +7,6 @@ const crudCategoriesRoutes = (app, fs) => {
 
     // READ ALL
     app.get(`/api/${apiTitle}/all`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         fs.readFile(paths.categories, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -31,7 +30,6 @@ const crudCategoriesRoutes = (app, fs) => {
 
     // READ ONE
     app.get(`/api/${apiTitle}/getOne/:name`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}/${req.params["name"]}`);
         fs.readFile(paths.categories, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -58,7 +56,6 @@ const crudCategoriesRoutes = (app, fs) => {
 
     // READ ELABORATED
     app.get(`/api/${apiTitle}/getElaborated`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         try {
             var movements = JSON.parse(fs.readFileSync(paths.movements, 'utf8'));
             var categories = JSON.parse(fs.readFileSync(paths.categories, 'utf8'));
@@ -75,21 +72,18 @@ const crudCategoriesRoutes = (app, fs) => {
 
     // CREATE
     app.post(`/api/${apiTitle}/add`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = createCategory(req.body, fs);
         res.status(200).send(result);
     });
 
     // UPDATE
     app.put(`/api/${apiTitle}/update/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = updateCategory(req.body, req.params["id"], fs);
         res.status(200).send(result);
     });
 
     // DELETE
     app.delete(`/api/${apiTitle}/delete/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = deleteCategory(req.params["id"], fs);
         res.status(200).send(result);
     });

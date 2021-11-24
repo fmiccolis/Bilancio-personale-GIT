@@ -6,7 +6,6 @@ const crudTypesRoutes = (app, fs) => {
 
     // READ ALL
     app.get(`/api/${apiTitle}/all`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         fs.readFile(paths.types, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -30,7 +29,6 @@ const crudTypesRoutes = (app, fs) => {
 
     // READ ONE
     app.get(`/api/${apiTitle}/getOne/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         fs.readFile(paths.types, 'utf8', (err, data) => {
             if (err) {
                 throw err;
@@ -57,21 +55,18 @@ const crudTypesRoutes = (app, fs) => {
 
     // CREATE
     app.post(`/api/${apiTitle}/add`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = createType(req.body, fs);
         res.status(200).send(result);
     });
 
     // UPDATE
     app.put(`/api/${apiTitle}/update/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = updateType(req.body, req.params["id"], fs);
         res.status(200).send(result);
     });
 
     // DELETE
     app.delete(`/api/${apiTitle}/delete/:id`, (req, res) => {
-        console.log(`chiamato ${req.originalUrl}`);
         var result = deleteType(req.params["id"], fs);
         res.status(200).send(result);
     });
