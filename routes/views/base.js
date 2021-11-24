@@ -1,9 +1,9 @@
 const {monthNames} = require('../../utils');
 
-const baseRoutes = (app) => {
+const baseRoutes = (app, changes) => {
     // default route
     app.get('/', (req, res) => {
-        res.render("pages/index", {text: "Visione Annuale"});
+        res.render("pages/index", {text: "Visione Annuale", changes: changes});
     });
 
     app.get('/year/:year/month/:month', (req, res) => {

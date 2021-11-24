@@ -6,9 +6,9 @@ const crudTypesRoutes = require('./api/crudTypes');
 const crudRecurrentsRoutes = require('./api/crudRecurrents');
 const baseRoutes = require('./views/base');
 
-const appRouter = (app, fs) => {
+const appRouter = (app, fs, changes) => {
     //view routes
-    baseRoutes(app);
+    baseRoutes(app, changes);
 
     //api movements routes
     crudMovementsRoutes(app, fs);
