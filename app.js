@@ -36,6 +36,10 @@ checkUpdate().then(response => {
 	var changes = response.summary.changes > 0;
 	const routes = require('./routes/routes.js')(app, fs, changes);
 	open(`http://127.0.0.1:${server.address().port}/`);
+}).catch(err => {
+	//console.log({err});
+	const routes = require('./routes/routes.js')(app, fs, false);
+	open(`http://127.0.0.1:${server.address().port}/`);
 });
 
 function checkUpdate() {
