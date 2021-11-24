@@ -4,7 +4,7 @@
 	  <span class="navbar-toggler-icon"></span>
   </button>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center px-2 w-100 text-light bg-black-50">
-      <h5 id="section-title"><%= typeof text == 'undefined' ? "" : text %></h5>
+      <h5 id="section-title"><%= typeof text == 'undefined' ? "" : text %> <%= typeof changes == 'undefined' ? "" : changes %></h5>
       <button id="<%= typeof changeModal != 'undefined' ? changeModal.buttonId : '' %>" type="button" class="btn btn-outline-green" data-bs-toggle="modal" data-bs-target="<%= typeof changeModal != 'undefined' ? changeModal.modalId : '' %>">
         <span style='color: lime'>
           <i class="fas fa-plus-circle"></i>
