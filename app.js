@@ -36,7 +36,6 @@ const server = app.listen(3000, () => {
 	checkRecurrentMovements(fs);
 });
 
-
 checkUpdate().then(response => {
 	var changes = response.summary.changes > 0;
 	const routes = require('./routes/routes.js')(app, fs, changes);
