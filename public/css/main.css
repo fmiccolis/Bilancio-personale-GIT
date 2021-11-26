@@ -10,21 +10,13 @@ canvas {
 	margin: auto;
 }
   
-  /*
-   * Sidebar
-   */
-  
 .sidebar {
     position: fixed;
     top: 0;
-    /* rtl:raw:
-    right: 0;
-    */
     bottom: 0;
-    /* rtl:remove */
     left: 0;
-    z-index: 100; /* Behind the navbar */
-    padding: 48px 0 0; /* Height of navbar */
+    z-index: 100; 
+    padding: 48px 0 0; 
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
   
@@ -105,10 +97,6 @@ canvas {
 .btn-toggle-nav a:focus {
     background-color: #d2f4ea;
 }
-  
-  /*
-   * Navbar
-   */
   
 .navbar-brand {
     padding-top: .75rem;
@@ -446,6 +434,60 @@ dl dt {
     border: 3px solid #dc3545;
     border-radius: 45% 50%;
     padding: 0.125rem;
+}
+
+.slider {
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+  
+.slides {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.slides::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.slides::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 10px;
+}
+
+.slides::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.slides > div {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+    transform: scale(1);
+    transition: transform 0.5s;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+}
+  
+.slider > a {
+    display: inline-flex;
+    height: 1.5rem;
+    background: white;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    margin: .5rem 1rem;
+    position: relative;
 }
 
 @media screen and (max-width: 767.98px) {
