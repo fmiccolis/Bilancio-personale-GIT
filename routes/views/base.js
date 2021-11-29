@@ -27,6 +27,10 @@ const baseRoutes = (app, changes) => {
         res.render("pages/wallet");
     });
 
+    app.get('/types', (req, res) => {
+        res.render("pages/types", {text: "Tipologie"});
+    });
+
     app.get('/recurrents', (req, res) => {
         res.render("pages/recurrents", {text: "Movimenti ricorrenti"});
     });

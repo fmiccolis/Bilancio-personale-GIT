@@ -4,8 +4,9 @@ const { createMovement } = require('./services/movementService');
 const month_detail = ['importo', 'descrizione', 'categoria', 's/d', 'actions'];
 const wallet_detail = ['data', 'importo', 'descrizione', 'categoria'];
 const year_detail = ['mese', 'totale speso', 'media giornaliera', 'proiezione finale di spesa', 'guadagni', 'risparmi', 'proiezione finale risparmi', 'saving rate', 'proiezione finale saving rate', 'giorno peggiore'];
-const vision_detail= ['anno', 'totale speso',	'media mensile', 'proiezione di spesa su media mensile', 'media giornaliera', 'proiezione di spesa su media giornaliera', 'proiezione di spesa media', 'entrate attuali', 'entrate medie', 'entrate finali stimate', 'risparmio medio mensile', 'risparmio attuale', 'risparmio annuale finale stimato', 'saving rate medio', 'mese peggiore'];
-const recurrent_detail= ['descrizione', 'importo', 'tipologia', 'categoria', 'direzione', 'codice', 'abilitato', 'prossimo lancio', 'actions'];
+const vision_detail = ['anno', 'totale speso',	'media mensile', 'proiezione di spesa su media mensile', 'media giornaliera', 'proiezione di spesa su media giornaliera', 'proiezione di spesa media', 'entrate attuali', 'entrate medie', 'entrate finali stimate', 'risparmio medio mensile', 'risparmio attuale', 'risparmio annuale finale stimato', 'saving rate medio', 'mese peggiore'];
+const recurrent_detail = ['descrizione', 'importo', 'tipologia', 'categoria', 'direzione', 'codice', 'abilitato', 'prossimo lancio', 'actions'];
+const type_detail = ['nome', 'descrizione', 'analizza', 'icona', 'sorgente', 'destinazione', 'lista'];
 const externalId = "external"
 const externalwallet = {
     id: externalId,
@@ -516,6 +517,24 @@ const elaborateRecurrents = (recurrents, wallets, types, categories) => {
     return elaborated;
 }
 
+function elaborateTypes(types, categories) {
+    var elaborated = {
+        headers: type_detail,
+        list: [],
+    };
+    for(let tidx in types) {
+        var type = types[tidx];
+        var category_list = []
+        type.lista.forEach(function(cidx) {
+            category_list.push(categories[cidx]);
+        });
+        type.lista = category_list
+        elaborated.list.push(type);
+    }
+
+    return elaborated;
+}
+
 function getWorstDay(monthData) {
     let worst = "";
     let max = 0;
@@ -643,5 +662,6 @@ module.exports = {
     elaborateUsableWallets: elaborateUsableWallets,
     checkRecurrentMovements: checkRecurrentMovements,
     elaborateRecurrents: elaborateRecurrents,
+    elaborateTypes: elaborateTypes,
     monthNames: monthNames
 };

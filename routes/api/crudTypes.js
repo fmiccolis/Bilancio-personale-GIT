@@ -1,5 +1,6 @@
 const paths = require('../../filepaths');
 const {createType, updateType, deleteType} = require("../../services/typeService");
+const {elaborateTypes} = require('../../utils');
 
 const crudTypesRoutes = (app, fs) => {
     const apiTitle = "types";
@@ -51,6 +52,21 @@ const crudTypesRoutes = (app, fs) => {
                 }
             }
         });
+    });
+    // READ ELABORATED
+    app.get(`/api/${apiTitle}/getElaborated`, (req, res) => {
+        try {
+            var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
+            var categories = JSON.parse(fs.readFileSync(paths.categories, 'utf8'));
+            res.send(elaborateTypes(types, categories));
+        } catch(e) {
+            console.log(e);
+            if(data.length === 0) {
+                res.send({empty: true});
+            } else {
+                res.send({error: true})
+            }
+        }
     });
 
     // CREATE
