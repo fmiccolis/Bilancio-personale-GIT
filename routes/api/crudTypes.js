@@ -58,7 +58,8 @@ const crudTypesRoutes = (app, fs) => {
         try {
             var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
             var categories = JSON.parse(fs.readFileSync(paths.categories, 'utf8'));
-            res.send(elaborateTypes(types, categories));
+            var wallets = JSON.parse(fs.readFileSync(paths.wallets, 'utf8'));
+            res.send(elaborateTypes(types, categories, wallets));
         } catch(e) {
             console.log(e);
             if(data.length === 0) {

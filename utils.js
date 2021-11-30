@@ -6,8 +6,8 @@ const wallet_detail = ['data', 'importo', 'descrizione', 'categoria'];
 const year_detail = ['mese', 'totale speso', 'media giornaliera', 'proiezione finale di spesa', 'guadagni', 'risparmi', 'proiezione finale risparmi', 'saving rate', 'proiezione finale saving rate', 'giorno peggiore'];
 const vision_detail = ['anno', 'totale speso',	'media mensile', 'proiezione di spesa su media mensile', 'media giornaliera', 'proiezione di spesa su media giornaliera', 'proiezione di spesa media', 'entrate attuali', 'entrate medie', 'entrate finali stimate', 'risparmio medio mensile', 'risparmio attuale', 'risparmio annuale finale stimato', 'saving rate medio', 'mese peggiore'];
 const recurrent_detail = ['descrizione', 'importo', 'tipologia', 'categoria', 'direzione', 'codice', 'abilitato', 'prossimo lancio', 'actions'];
-const type_detail = ['nome', 'descrizione', 'analizza', 'icona', 'sorgente', 'destinazione', 'lista'];
-const externalId = "external"
+const type_detail = ['nome', 'descrizione', 'analizza', 'icona', 'sorgente', 'destinazione', 'categorie utilizzabili', 'actions'];
+const externalId = "external";
 const externalwallet = {
     id: externalId,
     nome: "esterno",
@@ -517,18 +517,22 @@ const elaborateRecurrents = (recurrents, wallets, types, categories) => {
     return elaborated;
 }
 
-function elaborateTypes(types, categories) {
+function elaborateTypes(types, categories, wallets) {
+    wallets[externalId] = externalwallet;
     var elaborated = {
         headers: type_detail,
         list: [],
     };
     for(let tidx in types) {
         var type = types[tidx];
-        var category_list = []
+        type.id = tidx;
+        var category_list = [];
         type.lista.forEach(function(cidx) {
             category_list.push(categories[cidx]);
         });
-        type.lista = category_list
+        type.lista = category_list;
+        if(type.sorgente !== "any") type.sorgente = wallets[type.sorgente];
+        if(type.destinazione !== "any") type.destinazione = wallets[type.destinazione];
         elaborated.list.push(type);
     }
 
