@@ -602,6 +602,7 @@ const checkRecurrentMovements = (fs) => {
             if(!executed) {
                 console.log("eseguo l'operazione con codice " + operation.codice);
                 operation.data = composed
+                delete operation.abilitato
                 var result = createMovement(operation, false, fs);
                 console.log(result);
             }

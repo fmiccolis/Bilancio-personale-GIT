@@ -4,7 +4,7 @@ const externalId = "external"
 const writeFile = (fileData, callback, filePath, fs, encoding = 'utf8') => {	
     filtered = JSON.stringify(fileData, null, 2)
 
-    fs.writeFile(filePath, filtered, encoding, (err) => {
+    fs.writeFileSync(filePath, filtered, encoding, (err) => {
         if (err) {
             throw err;
         }
