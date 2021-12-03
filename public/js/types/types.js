@@ -14,9 +14,24 @@ $(document).ready(function() {
     $(this).on("click", ".cate-badge", function() {
         var text = $(this).text().trim();
         var page = $(this).data("page");
-        var urlsuffix = "#:~:text=";
-        window.location.href = `/${page}/${urlsuffix}${text}`;
-    })
+        window.location.href = `/${page}/#:~:text=${text}`;
+    });
+
+    $(this).on("swiped-left", "[data-swipe-threshold]", function(e) {
+        var detail = e.detail;
+        var tr = $(e.target).closest("tr");
+        tr.removeClass("tobeswiped");
+        tr.addClass("swiping");
+        tr.find(".action-buttons").fadeIn();
+    });
+
+    $(this).on("swiped-right", "[data-swipe-threshold]", function(e) {
+        var detail = e.detail;
+        var tr = $(e.target).closest("tr");
+        tr.addClass("tobeswiped");
+        tr.removeClass("swiping");
+        tr.find(".action-buttons").fadeOut();
+    });
 });
 
 function generateTypesTable(container, data) {
@@ -26,7 +41,7 @@ function generateTypesTable(container, data) {
         tr.append("<th>" + header + "</th>");
     });
     thead.append(tr);
-    tr = $("<tr></tr>");
+    tr = $("<tr data-swipe-threshold='50' data-swipe-timeout='500' data-swipe-ignore='false'></tr>");
     var tbody = $("<tbody></tbody>");
     var any_pill = "<span class='badge rounded-pill bg-info cate-badge'>any</span>";
     data.list.forEach(function(type) {
@@ -45,15 +60,18 @@ function generateTypesTable(container, data) {
         }
         tr.append(td);
         td = $("<td></td>");
+        var pills_container = $("<div class='pills-container'></div>")
         type.lista.forEach(function(category) {
-            td.append("<span class='badge rounded-pill cate-badge' data-page='categories' style='background-color: " + category.colore + "; color: " + invertColor(category.colore, true) + "'>" + category.icona + " " + category.nome + "</span>");
+            pills_container.append("<span class='badge rounded-pill cate-badge' data-page='categories' style='background-color: " + category.colore + "; color: " + invertColor(category.colore, true) + "'>" + category.icona + " " + category.nome + "</span>");
         })
+        td.append(pills_container);
         tr.append(td);
         let editB = $("<span class='action px-1' id='edit-" + type.id + "' data-bs-toggle='modal' data-bs-target='#addEditRecurrent' style='color: gold'><i class='fas fa-edit fa-fw'></i></span>");
         let deleteB = $("<span class='action px-1' id='delete-" + type.id + "' data-bs-toggle='modal' data-bs-target='#deleteRecurrent' style='color: tomato'><i class='fas fa-trash-alt fa-fw'></i></span>");
         tr.append($("<td></td>").append(editB, deleteB));
+        tr.append($("<td class='action-buttons'></td>").append("<div>ehi ciao</div>"));
         tbody.append(tr);
-        tr = $("<tr></tr>");
+        tr = $("<tr data-swipe-threshold='50' data-swipe-timeout='500' data-swipe-ignore='false'></tr>");
     });
     container.append(thead);
     container.append(tbody);

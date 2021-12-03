@@ -494,6 +494,43 @@ dl dt {
     margin: 0 .25rem;
 }
 
+.pills-container {
+    max-height: 100px;
+    overflow: overlay;
+}
+
+table#types > tbody > tr {
+    transition-property: right;
+    transition-duration: 0.8s;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition-delay: 0s;
+    -webkit-transition-property: right;
+    -webkit-transition-duration: 0.8s;
+    -webkit-transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    -webkit-transition-delay: 0s;
+    -moz-transition-property: right;
+    -moz-transition-duration: 0.8s;
+    -moz-transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    -moz-transition-delay: 0s;
+}
+
+.tobeswiped {
+    right: 0px;
+}
+
+.swiping {
+    position: relative;
+    right: 200px;
+}
+
+.action-buttons {
+    display: none;
+}
+
+.action-buttons > * {
+    width: 200px;
+}
+
 @media screen and (max-width: 767.98px) {
     .sidebar {
       top: 5rem;
