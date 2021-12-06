@@ -118,8 +118,6 @@ $(document).ready(function() {
         var sorgente = selected.data("sorgente");
         var destinazione = selected.data("destinazione");
         var lista = selected.data("lista").toString().includes(",") ? selected.data("lista").split(",") : [selected.data("lista").toString()];
-        console.log({lista});
-
         sorgenteSelect.removeAttr("disabled");
         destinazioneSelect.removeAttr("disabled");
         if(sorgente != "any") {

@@ -21,17 +21,17 @@ $(document).ready(function() {
 
 	$("#addEditMovement").on('show.bs.modal', function (event) {
 		var lineId = event.relatedTarget.id.slice(5);
-		var tr = $("details[data-id='" + lineId + "']");
+		var details = $("details[data-id='" + lineId + "']");
 		var currentModal = $(this);
-		if(tr.length > 0) { //edit line
-			currentModal.find("[name='data']").val(swap(tr.closest(".accordion-item").data("whichday").split("/")).join("-"));
-			currentModal.find("[name='importo']").val(tr.find(".importo").data("importo"));
-			currentModal.find("[name='tipologia']").val(tr.data("tipologiaid"));
-			currentModal.find("[name='categoria']").val(tr.find(".categoria").data("categoria"));
-			currentModal.find("[name='sorgente']").val(tr.find(".sd").data("sorgente"));
-			currentModal.find("[name='destinazione']").val(tr.find(".sd").data("destinazione"));
-			currentModal.find("[name='descrizione']").val(tr.find(".descrizione").text());
-			currentModal.find("[name='codice']").val(tr.find(".codice").text());
+		if(details.length > 0) { //edit line
+			currentModal.find("[name='data']").val(swap(details.closest("[data-day]").data("day").split("/")).join("-"));
+			currentModal.find("[name='importo']").val(details.find(".importo").data("importo"));
+			currentModal.find("[name='tipologia']").val(details.data("tipologiaid"));
+			currentModal.find("[name='categoria']").val(details.find(".categoria").data("categoria"));
+			currentModal.find("[name='sorgente']").val(details.find(".sd").data("sorgente"));
+			currentModal.find("[name='destinazione']").val(details.find(".sd").data("destinazione"));
+			currentModal.find("[name='descrizione']").val(details.find(".descrizione").text());
+			currentModal.find("[name='codice']").val(details.find(".codice").text());
 			$("#addEditMovementTitle").text("Modifica Movimento (ID="+lineId+")");
 			$("#editLine").show();
 			$("#addNewLine").hide();

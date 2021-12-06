@@ -9,7 +9,6 @@ $(document).ready(function() {
 			case data.hasOwnProperty("error"): accordion.append($("<div class='alert alert-danger' role='alert'>C'è un errore nel database—Richiedi assistenza!</div>")); break;
 			default:
 				generateCalendar(accordion, data, year, month);
-				//generateAccordions(accordion, data);
 				generateChart(data.categories.entrata, "total", incomeChart, "entrata", "Income dataset-true", incomeContainer);
 				generateChart(data.categories.uscita, "total", exitsChart, "uscita", "Exists dataset-true", exitsContainer);
 				updateCategoriaSelect(data.categories);
@@ -24,7 +23,7 @@ $(document).ready(function() {
 		table.find("tbody").find("tr").not("[data-id='" + lineId + "']").remove();
 		table.find("tr").find("td:last-child, th:last-child").remove();
 		table.find("tr").first().prepend($("<th scope='col' style='text-align: center;'>data</th>"));
-		table.find("tr").last().prepend($("<td>" + tr.closest(".accordion-item").data("whichday") + "</td>"));
+		table.find("tr").last().prepend($("<td>" + tr.closest(".accordion-item").data("day") + "</td>"));
 		var dataTodelete = $("#dataTodelete");
 		dataTodelete.empty();
 		dataTodelete.append(table);
@@ -90,42 +89,6 @@ $(document).ready(function() {
 	tipologiaSelect.change(filters);
 });
 
-function generateAccordions(accordion, day_view) {
-	var keys = extractKeys(day_view);
-	keys.forEach(function(date) {
-		let parts_of_date = date.split("/");
-		let output = new Date(+parts_of_date[2], parts_of_date[1] - 1, +parts_of_date[0]);
-		var trimmed_date = date.replaceAll("/", "");
-		var headingId = "panelsStayOpen-heading" + trimmed_date;
-		var panelId = "panelsStayOpen-collapse" + trimmed_date;
-		var dayname = capitalizeFirstLetter(output.toLocaleString('it-IT', { weekday: 'long' })) + " " + output.getDate();
-		var total_income = day_view.dates[date].entrata;
-		var total_spent = day_view.dates[date].uscita;
-		var accordion_item = $("<div class='accordion-item' data-whichday='" + date + "'></div>");
-		var accordion_header = $("<div class='accordion-header' id='" + headingId + "'></div>");
-		var accordion_button = $("<button class='accordion-button custom-accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#" + panelId + "' aria-expanded='true' aria-controls='" + panelId + "'>" + dayname + "</button>")
-		var accordion_infos = $("<div class='infos'><div class='income mr-1'>" + formatter.format(total_income) + "</div><div class='outcome mr-1'>" + formatter.format(total_spent) + "</div></div>");
-		accordion_button.append(accordion_infos);
-		accordion_header.append(accordion_button);
-		accordion_item.append(accordion_header);
-		var accordion_panel = $("<div id='" + panelId + "' class='accordion-collapse collapse' aria-labelledby='" + headingId + "'></div>");
-		var accordion_body = $("<div class='accordion-body'></div>");
-		visualizeMovement(
-			day_view.dates[date].list, 
-			accordion_body, 
-			{
-				showData: false, 
-				showActions: true,
-				readClass: false
-			}
-		);
-		accordion_panel.append(accordion_body);
-		accordion_item.append(accordion_panel);
-		accordion.append(accordion_item);
-	});
-	$("[data-bs-toggle='tooltip']").tooltip();
-}
-
 function generateCalendar(accordion, day_view, year, month) {
 	let output = new Date(year, month, 1);
 	let monthName = output.toLocaleString('it-IT', { month: 'long' }).toUpperCase();
@@ -149,7 +112,6 @@ function generateCalendar(accordion, day_view, year, month) {
 	}
 	var added = how_many_fake_boxes;
 	var today = new Date().toLocaleString("it-IT", { year: 'numeric', month: '2-digit', day: '2-digit' });
-	console.log({day_view});
 	for(let i = 0; i < days.length; i++) {
 		var trimmed_date = days[i].toLocaleString("it-IT", { year: 'numeric', month: '2-digit', day: '2-digit' });
 		var movements = day_view.dates[trimmed_date];
@@ -175,6 +137,7 @@ function generateCalendar(accordion, day_view, year, month) {
 		if(added === 7) {
 			added = 0;
 			generateMovementsBox(calendar_body, week, week_movements);
+			week_movements = [];
 			week = $("<div class='week'></div>");
 		}
 	}
@@ -183,6 +146,7 @@ function generateCalendar(accordion, day_view, year, month) {
 		week.append("<div class='fake-box'></div>");
 	}
 	generateMovementsBox(calendar_body, week, week_movements)
+	week_movements = [];
 	calendar.append(calendar_header);
 	calendar.append(calendar_body);
 	accordion.append(calendar);
@@ -205,7 +169,6 @@ function generateMovementsBox(calendar_body, week, week_movements) {
 		);
 		movement_box.append(dayname);
 	});
-	week_movements = [];
 	calendar_body.append(movement_box);
 }
 

@@ -28,7 +28,7 @@ $(document).ready(function() {
     $("#addNewWallet").click(function () {
         var newWallet = {
             nome: $("#nomeInput").val(),
-            icona: $("#iconaInput").val(),
+            icona: $("#visualizzazione").html(),
             totale: $("#totaleInput").val(),
             scadenza: swap($("#scadenzaInput").val().split("-")).join("/"),
             utilizzabile: $("#utilizzabileInput").is(":checked")
