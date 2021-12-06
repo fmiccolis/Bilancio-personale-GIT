@@ -11,60 +11,32 @@
         <div class="continer-fluid">
           <div class="row">
             <div class="col-md-6 col-12 mb-3">
-              <label for="dataInput" class="form-label">Data</label>
-              <select class="form-select" id="dataInput" name="data" aria-label="Data select" aria-describedby="dataHelp">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-              </select>
-              <div id="dataHelp" class="form-text">Scegli la data che verrà poi accoppiata insieme alle altre dello stesso mese e anno.</div>
+              <label for="nomeInput" class="form-label">Nome</label>
+              <input type="number" name="nome" class="form-control nome" id="nomeInput" aria-describedby="nomeHelp">
+              <div id="nomeHelp" class="form-text">Inserisci il nome della tipologia.</div>
             </div>
             <div class="col-md-6 col-12 mb-3">
-              <label for="importoInput" class="form-label">Importo</label>
-              <input type="number" name="importo" class="form-control importo" id="importoInput" aria-describedby="importoHelp">
-              <div id="importoHelp" class="form-text">Inserisci l'importo dell'entrata o dell'uscita utilizzando il punto come separatore delle virgole.</div>
+              <label for="descrizioneInput" class="form-label">Descrizione</label>
+              <textarea rows="3" name="descrizione" class="form-control" id="descrizioneInput" aria-describedby="descrizioneHelp"></textarea>
+              <div id="descrizioneHelp" class="form-text">Scegli una descrizione per questa tipologia.</div>
             </div>
           </div>
-            <div class="row">
-                <div class="col-md-6 col-12 mb-3">
-                    <label for="tipologiaInput" class="form-label">Tipologia</label>
-                    <select class="form-select" id="tipologiaInput" name="tipologia" aria-label="Tipologia select" aria-describedby="tipologiaHelp"></select>
-                    <div id="tipologiaHelp" class="form-text">Scegli la tipologia del nuovo inserimento.</div>
-                </div>
-                <div class="col-md-6 col-12 mb-3">
-                    <label for="categoriaInput" class="form-label">Categoria</label>
-                    <select class="form-select" id="categoriaInput" name="categoria" aria-label="Categoria select" aria-describedby="categoriaHelp"></select>
-                    <div id="categoriaHelp" class="form-text">Scegli la categoria.</div>
-                </div>
+          <div class="row">
+            <div class="col-md-6 col-12 mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="analizzaInput" aria-describedby="analizzaHelp" checked>
+                <label class="form-check-label" for="analizzaInput">
+                  Analizza
+                </label>
+              </div>
+              <div id="analizzaHelp" class="form-text">Decidi se questa tipologia deve essere considerata nei calcoli (ATTENZIONE! Se a livello software non è stata implementata, si prega di lasciare disattivato questo campo).</div>
             </div>
+            <div class="col-md-6 col-12 mb-3">
+              <label for="categoriaInput" class="form-label">Categoria</label>
+              <select multiple class="form-select" id="categoriaInput" name="categoria" aria-label="Categoria select" aria-describedby="categoriaHelp"></select>
+              <div id="categoriaHelp" class="form-text">Scegli la categoria.</div>
+            </div>
+          </div>
             <div class="row">
                 <div class="col-md-6 col-12 mb-3">
                     <label for="sorgenteInput" class="form-label">Sorgente</label>
@@ -82,16 +54,21 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-12 mb-3">
-                    <label for="descrizioneInput" class="form-label">Descrizione</label>
-                    <textarea rows="3" name="descrizione" class="form-control" id="descrizioneInput" aria-describedby="descrizioneHelp"></textarea>
-                    <div id="descrizioneHelp" class="form-text">Scegli una descrizione per questo nuovo inserimento.</div>
-                </div>
-                <div class="col-md-6 col-12 mb-3">
-                    <label for="codiceInput" class="form-label">Codice</label>
-                    <input type='text' id='codiceInput' class='codice form-control' name='codice' value='' maxlength="8" minlength="8" aria-describedby="codiceHelp" />
-                    <div id="codiceHelp" class="form-text">Scegli un codice di 8 caratteri univoco per questo movimento ricorrente.</div>
-                </div>
+              <div class="col-md-6 col-12 mb-3">
+                <label for="iconaInput" class="form-label">Icona</label>
+                  <div class="dropdown">
+                    <button class="btn btn-outline-secondary w-100 dropdown-toggle my" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Scegli l'icona
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1"></div>
+                  </div>
+                  <div id="iconaHelp" class="form-text">Inserisci l'icona, tramite tag HTML, della categoria. Visita <a href="https://fontawesome.com/" target="_blank">Font Awesome</a> per trovare quella più corretta</div>
+              </div>
+              <div class="col-md-6 col-12 mb-3 text-center">
+                <label for="visualizzazione" class="form-label">Visualizza</label>
+                <div id="visualizzazione" class="w-100 text-center fs-1"></div>
+                <div id="nomeHelp" class="form-text">Qui è come apparirebbe l'icona della categoria.</div>
+              </div>
             </div>
         </div>
       </div>

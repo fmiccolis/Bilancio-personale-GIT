@@ -1,5 +1,7 @@
 $(document).ready(function() {
     var recurrents = $("#types");
+    fillCategories();
+    var dataFromServer = null;
     getElaboratedTypes().then(data => {
         if(data.hasOwnProperty("empty")) {
             categories.append($("<div class='alert alert-info' role='alert'>Il database è vuoto—Aggiungi una nuova categoria con l'apposito pulsante!</div>"));
@@ -7,8 +9,25 @@ $(document).ready(function() {
             categories.append($("<div class='alert alert-danger' role='alert'>C'è un errore nel database—Richiedi assistenza!</div>"));
         } else {
             console.log(data);
-            generateTypesTable(recurrents, data)
+            generateTypesTable(recurrents, data);
+            dataFromServer = data;
         }
+	});
+
+    $("#addEditType").on('show.bs.modal', function (event) {
+		var lineId = event.relatedTarget.id.slice(5);
+        var type = dataFromServer.list.find(typ => typ.id === lineId);
+        console.log({type});
+		var currentModal = $(this);
+		if(type) { //edit type
+            console.log("sono in edit");
+		} else { //add type
+			$("#addEditTypeTitle").text("Nuova Tipologia");
+			currentModal.find(".form-control, .form-select").val("");
+			$("#editType").hide();
+			$("#addNewType").show();
+			currentModal.find(".hiddenId").val("");
+		}
 	});
 
     $(this).on("click", ".cate-badge", function() {
@@ -41,7 +60,7 @@ function generateTypesTable(container, data) {
         tr.append("<th>" + header + "</th>");
     });
     thead.append(tr);
-    tr = $("<tr data-swipe-threshold='50' data-swipe-timeout='500' data-swipe-ignore='false'></tr>");
+    tr = $("<tr class='tobeswiped' data-swipe-threshold='50' data-swipe-timeout='500' data-swipe-ignore='false'></tr>");
     var tbody = $("<tbody></tbody>");
     var any_pill = "<span class='badge rounded-pill bg-info cate-badge'>any</span>";
     data.list.forEach(function(type) {
@@ -66,13 +85,27 @@ function generateTypesTable(container, data) {
         })
         td.append(pills_container);
         tr.append(td);
-        let editB = $("<span class='action px-1' id='edit-" + type.id + "' data-bs-toggle='modal' data-bs-target='#addEditRecurrent' style='color: gold'><i class='fas fa-edit fa-fw'></i></span>");
-        let deleteB = $("<span class='action px-1' id='delete-" + type.id + "' data-bs-toggle='modal' data-bs-target='#deleteRecurrent' style='color: tomato'><i class='fas fa-trash-alt fa-fw'></i></span>");
+        let editB = $("<span class='action px-1' id='edit-" + type.id + "' data-bs-toggle='modal' data-bs-target='#addEditType' style='color: gold'><i class='fas fa-edit fa-fw'></i></span>");
+        let deleteB = $("<span class='action px-1' id='delete-" + type.id + "' data-bs-toggle='modal' data-bs-target='#deleteType' style='color: tomato'><i class='fas fa-trash-alt fa-fw'></i></span>");
         tr.append($("<td></td>").append(editB, deleteB));
         tr.append($("<td class='action-buttons'></td>").append("<div>ehi ciao</div>"));
         tbody.append(tr);
-        tr = $("<tr data-swipe-threshold='50' data-swipe-timeout='500' data-swipe-ignore='false'></tr>");
+        tr = $("<tr class='tobeswiped' data-swipe-threshold='50' data-swipe-timeout='500' data-swipe-ignore='false'></tr>");
     });
     container.append(thead);
     container.append(tbody);
+}
+
+function fillCategories() {
+    getElaboratedCategories().then(data => {
+        if(data.hasOwnProperty("empty")) {
+            console.log("vuoto");
+        } else if(data.hasOwnProperty("error")) {
+            console.log("errore");
+        } else {
+            data.forEach(function(cate) {
+                $("#categoriaInput").append($("<option value='" + cate.id + "'>" + cate.name + "</option>"));
+            });
+        }
+    });
 }
