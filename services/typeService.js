@@ -21,6 +21,7 @@ const updateType = (updatedData, typeId, fs) => {
     console.log("\t", JSON.stringify(updatedData));
     try {
         var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
+        updatedData.analizza = updatedData.analizza === "true";
         types[typeId] = updatedData;
         writeFile(types, () => {console.log("aggiornato")}, paths.types, fs);
 

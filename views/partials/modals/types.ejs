@@ -7,12 +7,11 @@
       </div>
       <div class="modal-body">
         <input type='hidden' class='hiddenId' value='' />
-        <input type='hidden' id='abilitatoInput' class='abilitato' name='abilitato' value='' />
         <div class="continer-fluid">
           <div class="row">
             <div class="col-md-6 col-12 mb-3">
               <label for="nomeInput" class="form-label">Nome</label>
-              <input type="number" name="nome" class="form-control nome" id="nomeInput" aria-describedby="nomeHelp">
+              <input type="text" name="nome" class="form-control nome" id="nomeInput" aria-describedby="nomeHelp">
               <div id="nomeHelp" class="form-text">Inserisci il nome della tipologia.</div>
             </div>
             <div class="col-md-6 col-12 mb-3">
@@ -24,7 +23,7 @@
           <div class="row">
             <div class="col-md-6 col-12 mb-3">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="analizzaInput" aria-describedby="analizzaHelp" checked>
+                <input class="form-check-input" name="analizza" type="checkbox" value="" id="analizzaInput" aria-describedby="analizzaHelp" checked>
                 <label class="form-check-label" for="analizzaInput">
                   Analizza
                 </label>
@@ -32,27 +31,29 @@
               <div id="analizzaHelp" class="form-text">Decidi se questa tipologia deve essere considerata nei calcoli (ATTENZIONE! Se a livello software non è stata implementata, si prega di lasciare disattivato questo campo).</div>
             </div>
             <div class="col-md-6 col-12 mb-3">
-              <label for="categoriaInput" class="form-label">Categoria</label>
-              <select multiple class="form-select" id="categoriaInput" name="categoria" aria-label="Categoria select" aria-describedby="categoriaHelp"></select>
-              <div id="categoriaHelp" class="form-text">Scegli la categoria.</div>
+              <label for="categorieInput" class="form-label">Categorie utilizzabili</label>
+              <select multiple class="form-select" id="categorieInput" name="categorie" aria-label="categorie select" aria-describedby="categorieHelp"></select>
+              <div id="categorieHelp" class="form-text">Scegli le categorie utilizzabili con questa tipologia.</div>
             </div>
           </div>
-            <div class="row">
-                <div class="col-md-6 col-12 mb-3">
-                    <label for="sorgenteInput" class="form-label">Sorgente</label>
-                    <select class="form-select" id="sorgenteInput" name="sorgente" aria-label="Sorgente select" aria-describedby="sorgenteHelp">
-                    <option value="external" selected>Esterno</option>
-                    </select>
-                    <div id="sorgenteHelp" class="form-text">La sorgente del movimento.</div>
-                </div>
-                <div class="col-md-6 col-12 mb-3">
-                    <label for="destinazioneInput" class="form-label">Destinazione</label>
-                    <select class="form-select" id="destinazioneInput" name="destinazione" aria-label="Destinazione select" aria-describedby="destinazioneHelp">
-                    <option value="external" selected>Esterno</option>
-                    </select>
-                    <div id="destinazioneHelp" class="form-text">La destinazione del movimento.</div>
-                </div>
+          <div class="row">
+            <div class="col-md-6 col-12 mb-3">
+              <label for="sorgenteInput" class="form-label">Sorgente</label>
+              <select class="form-select" id="sorgenteInput" name="sorgente" aria-label="Sorgente select" aria-describedby="sorgenteHelp">
+              <option value="external" selected>Esterno</option>
+              <option value="any" selected>Qualsiasi Portafoglio</option>
+              </select>
+              <div id="sorgenteHelp" class="form-text">La sorgente della tipologia. Se diversa da 'qualsiasi' non sarà modificabile durente l'inserimento di un nuovo movimento.</div>
             </div>
+            <div class="col-md-6 col-12 mb-3">
+              <label for="destinazioneInput" class="form-label">Destinazione</label>
+              <select class="form-select" id="destinazioneInput" name="destinazione" aria-label="Destinazione select" aria-describedby="destinazioneHelp">
+              <option value="external" selected>Esterno</option>
+              <option value="any" selected>Qualsiasi Portafoglio</option>
+              </select>
+              <div id="destinazioneHelp" class="form-text">La destinazione della tipologia. Se diversa da 'qualsiasi' non sarà modificabile durente l'inserimento di un nuovo movimento.</div>
+            </div>
+          </div>
             <div class="row">
               <div class="col-md-6 col-12 mb-3">
                 <label for="iconaInput" class="form-label">Icona</label>
@@ -62,12 +63,12 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1"></div>
                   </div>
-                  <div id="iconaHelp" class="form-text">Inserisci l'icona, tramite tag HTML, della categoria. Visita <a href="https://fontawesome.com/" target="_blank">Font Awesome</a> per trovare quella più corretta</div>
+                  <div id="iconaHelp" class="form-text">Inserisci l'icona della tipologia. Usa il menù o visita <a href="https://fontawesome.com/" target="_blank">Font Awesome</a> per trovare quella più corretta</div>
               </div>
               <div class="col-md-6 col-12 mb-3 text-center">
                 <label for="visualizzazione" class="form-label">Visualizza</label>
                 <div id="visualizzazione" class="w-100 text-center fs-1"></div>
-                <div id="nomeHelp" class="form-text">Qui è come apparirebbe l'icona della categoria.</div>
+                <div id="nomeHelp" class="form-text">Qui è come apparirebbe l'icona della tipologia.</div>
               </div>
             </div>
         </div>

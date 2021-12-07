@@ -167,12 +167,12 @@ function addNewType(newWallet) {
     });
 }
 
-function editType(newWallet, id) {
+function editType(newType, id) {
     return $.ajax({
         url: `/api/types/update/${id}`,
         type: "put",
         dataType: "json",
-        data: newWallet
+        data: newType
     });
 }
 

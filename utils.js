@@ -528,11 +528,18 @@ function elaborateTypes(types, categories, wallets) {
         type.id = tidx;
         var category_list = [];
         type.lista.forEach(function(cidx) {
+            categories[cidx].id = cidx;
             category_list.push(categories[cidx]);
         });
         type.lista = category_list;
-        if(type.sorgente !== "any") type.sorgente = wallets[type.sorgente];
-        if(type.destinazione !== "any") type.destinazione = wallets[type.destinazione];
+        if(type.sorgente !== "any") {
+            wallets[type.sorgente].id = type.sorgente;
+            type.sorgente = wallets[type.sorgente];
+        }
+        if(type.destinazione !== "any") {
+            wallets[type.destinazione].id = type.destinazione;
+            type.destinazione = wallets[type.destinazione];
+        }
         elaborated.list.push(type);
     }
 

@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var recurrents = $("#types");
     fillCategories();
+    fillWallets();
     var dataFromServer = null;
     getElaboratedTypes().then(data => {
         if(data.hasOwnProperty("empty")) {
@@ -21,6 +22,23 @@ $(document).ready(function() {
 		var currentModal = $(this);
 		if(type) { //edit type
             console.log("sono in edit");
+			currentModal.find("[name='nome']").val(type.nome);
+			currentModal.find("[name='descrizione']").val(type.descrizione);
+			currentModal.find("[name='analizza']").prop("checked", type.analizza);
+			currentModal.find("[name='categorie']").val(type.lista.map(({ id }) => id));
+            var sorgente = type.sorgente.id;
+            console.log({sorgente})
+            if(!sorgente) sorgente = "any";
+            currentModal.find("[name='sorgente']").val(sorgente);
+            var destinazione = type.destinazione.id;
+            console.log({destinazione})
+            if(!destinazione) destinazione = "any";
+            currentModal.find("[name='destinazione']").val(destinazione);
+            currentModal.find("#visualizzazione").html(type.icona)
+			$("#addEditTypeTitle").text("Modifica Tipologia (ID="+lineId+")");
+			$("#editType").show();
+			$("#addNewType").hide();
+			currentModal.find(".hiddenId").val(lineId);
 		} else { //add type
 			$("#addEditTypeTitle").text("Nuova Tipologia");
 			currentModal.find(".form-control, .form-select").val("");
@@ -28,6 +46,30 @@ $(document).ready(function() {
 			$("#addNewType").show();
 			currentModal.find(".hiddenId").val("");
 		}
+	});
+
+    $("#editType").click(function () {
+		var lineId = $(this).closest(".modal-content").find(".hiddenId").val();
+		var nome = $("#nomeInput").val();
+		var descrizione = $("#descrizioneInput").val();
+		var analizza = $("#analizzaInput").is(":checked");
+		var lista = $("#categorieInput").val();
+		var sorgente = $("#sorgenteInput").val();
+		var destinazione = $("#destinazioneInput").val();
+        var icona = $("#visualizzazione").html();
+		var newLine = {
+			nome: nome,
+			descrizione: descrizione,
+			analizza: analizza,
+			lista: lista,
+            icona: icona,
+			sorgente: sorgente,
+			destinazione: destinazione
+		}
+        console.log({newLine});
+		editType(newLine, lineId).then(response => {
+			window.location.reload();
+		});
 	});
 
     $(this).on("click", ".cate-badge", function() {
@@ -104,8 +146,24 @@ function fillCategories() {
             console.log("errore");
         } else {
             data.forEach(function(cate) {
-                $("#categoriaInput").append($("<option value='" + cate.id + "'>" + cate.name + "</option>"));
+                $("#categorieInput").append($("<option value='" + cate.id + "'>" + cate.name + "</option>"));
             });
+        }
+    });
+}
+
+function fillWallets() {
+    getWallets().then(data => {
+        if(data.hasOwnProperty("empty")) {
+            console.log("vuoto");
+        } else if(data.hasOwnProperty("error")) {
+            console.log("errore");
+        } else {
+            for(let idx in data) {
+                var walletDOM = $("<option value='" + idx + "'>" + data[idx].nome + "</option>");
+                $("#sorgenteInput").append(walletDOM);
+                $("#destinazioneInput").append(walletDOM.clone());
+            }
         }
     });
 }
