@@ -1,5 +1,5 @@
 const paths = require('../../filepaths');
-const {createType, updateType, deleteType} = require("../../services/typeService");
+const {createType, updateType, deleteType, updateTypeAnalitics} = require("../../services/typeService");
 const {elaborateTypes} = require('../../utils');
 
 const crudTypesRoutes = (app, fs) => {
@@ -59,7 +59,8 @@ const crudTypesRoutes = (app, fs) => {
             var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
             var categories = JSON.parse(fs.readFileSync(paths.categories, 'utf8'));
             var wallets = JSON.parse(fs.readFileSync(paths.wallets, 'utf8'));
-            res.send(elaborateTypes(types, categories, wallets));
+            var movements = JSON.parse(fs.readFileSync(paths.movements, 'utf8'));
+            res.send(elaborateTypes(types, categories, wallets, movements));
         } catch(e) {
             console.log(e);
             if(data.length === 0) {
@@ -79,6 +80,12 @@ const crudTypesRoutes = (app, fs) => {
     // UPDATE
     app.put(`/api/${apiTitle}/update/:id`, (req, res) => {
         var result = updateType(req.body, req.params["id"], fs);
+        res.status(200).send(result);
+    });
+
+    // UPDATE ANALITICS
+    app.put(`/api/${apiTitle}/analitics/:id`, (req, res) => {
+        var result = updateTypeAnalitics(req.params["id"], fs);
         res.status(200).send(result);
     });
 

@@ -5,7 +5,7 @@ $(document).ready(function() {
     var dataFromServer = null;
     getElaboratedTypes().then(data => {
         if(data.hasOwnProperty("empty")) {
-            categories.append($("<div class='alert alert-info' role='alert'>Il database è vuoto—Aggiungi una nuova categoria con l'apposito pulsante!</div>"));
+            categories.append($("<div class='alert alert-info' role='alert'>Il database è vuoto—Aggiungi una nuova tipologia con l'apposito pulsante!</div>"));
         } else if(data.hasOwnProperty("error")) {
             categories.append($("<div class='alert alert-danger' role='alert'>C'è un errore nel database—Richiedi assistenza!</div>"));
         } else {
@@ -18,7 +18,7 @@ $(document).ready(function() {
     $("#addEditType").on('show.bs.modal', function (event) {
 		var lineId = event.relatedTarget.id.slice(5);
         var type = dataFromServer.list.find(typ => typ.id === lineId);
-        console.log({type});
+        //console.log({type});
 		var currentModal = $(this);
 		if(type) { //edit type
             console.log("sono in edit");
@@ -27,11 +27,9 @@ $(document).ready(function() {
 			currentModal.find("[name='analizza']").prop("checked", type.analizza);
 			currentModal.find("[name='categorie']").val(type.lista.map(({ id }) => id));
             var sorgente = type.sorgente.id;
-            console.log({sorgente})
             if(!sorgente) sorgente = "any";
             currentModal.find("[name='sorgente']").val(sorgente);
             var destinazione = type.destinazione.id;
-            console.log({destinazione})
             if(!destinazione) destinazione = "any";
             currentModal.find("[name='destinazione']").val(destinazione);
             currentModal.find("#visualizzazione").html(type.icona)
@@ -46,6 +44,43 @@ $(document).ready(function() {
 			$("#addNewType").show();
 			currentModal.find(".hiddenId").val("");
 		}
+	});
+
+    $("#deleteType").on('show.bs.modal', function (event) {
+		var lineId = event.relatedTarget.id.slice(7);
+        console.log(lineId);
+		var tr = $("tr[data-r-id='" + lineId + "']");
+		var table = tr.closest("table").clone();
+		table.find("tbody").find("tr").not("[data-r-id='" + lineId + "']").remove();
+		table.find("tr > td").slice(-3).remove();
+		table.find("tr > th").slice(-3).remove();
+		var dataTodelete = $("#dataTodelete");
+		dataTodelete.empty();
+		dataTodelete.append(table);
+		dataTodelete.append($("<input type='hidden' class='hiddenId' value='" + lineId + "' />"));
+		$("[data-bs-toggle='tooltip']").tooltip();
+	});
+
+    $("#addNewType").click(function () {
+		var nome = $("#nomeInput").val();
+		var descrizione = $("#descrizioneInput").val();
+		var analizza = $("#analizzaInput").is(":checked");
+		var lista = $("#categorieInput").val();
+		var sorgente = $("#sorgenteInput").val();
+		var destinazione = $("#destinazioneInput").val();
+        var icona = $("#visualizzazione").html();
+		var newType = {
+			nome: nome,
+			descrizione: descrizione,
+			analizza: analizza,
+			lista: lista,
+            icona: icona,
+			sorgente: sorgente,
+			destinazione: destinazione
+		}
+		addNewType(newType).then(response => {
+			window.location.reload();
+		});
 	});
 
     $("#editType").click(function () {
@@ -66,8 +101,21 @@ $(document).ready(function() {
 			sorgente: sorgente,
 			destinazione: destinazione
 		}
-        console.log({newLine});
 		editType(newLine, lineId).then(response => {
+			window.location.reload();
+		});
+	});
+
+    $(this).on("change", ".toggleAbility", function (e) {
+        e.preventDefault();
+        var id = $(this).attr('id').replace("SwitchCheck-", "");
+        toggleTypeAnalitics(id);
+    });
+
+	$("#deleteThisType").click(function () {
+		var typeId = $("#dataTodelete").find(".hiddenId").val();
+        console.log({typeId});
+		deleteType(typeId).then(response => {
 			window.location.reload();
 		});
 	});
@@ -129,7 +177,10 @@ function generateTypesTable(container, data) {
         tr.append(td);
         let editB = $("<span class='action px-1' id='edit-" + type.id + "' data-bs-toggle='modal' data-bs-target='#addEditType' style='color: gold'><i class='fas fa-edit fa-fw'></i></span>");
         let deleteB = $("<span class='action px-1' id='delete-" + type.id + "' data-bs-toggle='modal' data-bs-target='#deleteType' style='color: tomato'><i class='fas fa-trash-alt fa-fw'></i></span>");
-        tr.append($("<td></td>").append(editB, deleteB));
+        td = $("<td></td>");
+        td.append(editB);
+        if(!type.movimenti) td.append(deleteB)
+        tr.append(td);
         tr.append($("<td class='action-buttons'></td>").append("<div>ehi ciao</div>"));
         tbody.append(tr);
         tr = $("<tr class='tobeswiped' data-swipe-threshold='50' data-swipe-timeout='500' data-swipe-ignore='false'></tr>");

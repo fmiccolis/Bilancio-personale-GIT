@@ -176,6 +176,22 @@ function editType(newType, id) {
     });
 }
 
+function toggleTypeAnalitics(id) {
+    return $.ajax({
+        url: `/api/types/analitics/${id}`,
+        type: "put",
+        dataType: "json"
+    });
+}
+
+function deleteType(typeId) {
+    return $.ajax({
+        url: `/api/types/delete/${typeId}`,
+        type: "delete",
+        dataType: "text"
+    });
+}
+
 // RECURRENTS
 function getRecurrents() {
 	return $.ajax({

@@ -517,7 +517,7 @@ const elaborateRecurrents = (recurrents, wallets, types, categories) => {
     return elaborated;
 }
 
-function elaborateTypes(types, categories, wallets) {
+function elaborateTypes(types, categories, wallets, movements) {
     wallets[externalId] = externalwallet;
     var elaborated = {
         headers: type_detail,
@@ -540,6 +540,14 @@ function elaborateTypes(types, categories, wallets) {
             wallets[type.destinazione].id = type.destinazione;
             type.destinazione = wallets[type.destinazione];
         }
+        var movimenti = false;
+        Object.entries(movements).some(([key, value]) => {
+            if(value.tipologiaId === tidx) {
+                movimenti = true;
+                return true;
+            }
+        });
+        type.movimenti = movimenti;
         elaborated.list.push(type);
     }
 
