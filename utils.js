@@ -434,6 +434,65 @@ const elaborateCategories = (categories, pureLines) => {
     return elaboratedArray;
 }
 
+const elaborateDescriptions = (date, pureLines, categoryId) => {
+    var descriptionsArray = [];
+    let parts_of_date = date.split("-");
+    let output = new Date(+parts_of_date[2], parts_of_date[1] - 1, +parts_of_date[0]);
+    var currentWeekDay = output.getDay();
+    for(let idx in pureLines) {
+        var currentLine = pureLines[idx];
+        if(currentLine.categoriaId !== categoryId || currentLine.descrizione === "") continue;
+        
+        let parts_of_date = currentLine.data.split("/");
+        let output = new Date(+parts_of_date[2], parts_of_date[1] - 1, +parts_of_date[0]);
+        var movementDay = output.getDay()
+        if(currentWeekDay !== movementDay) continue;
+
+        var description = currentLine.descrizione;
+        var splitted = description.split(" ");
+        if(descriptionsArray.length === 0) {
+            descriptionsArray.push({
+                text: description,
+                usage: 1,
+                splitted: splitted
+            });
+        } else {
+            var add = false;
+            for(var i = 0; i < descriptionsArray.length; i++) {
+                var descriptionData = descriptionsArray[i];
+                if(descriptionData.text === description) {
+                    descriptionData.usage += 1;
+                    add = false;
+                    break;
+                } else {
+                    var maxWords = descriptionData.splitted.length > splitted.length ? descriptionData.splitted.length : splitted.length;
+                    var equalWords = 0;
+                    descriptionData.splitted.forEach(function(preWord) {
+                        splitted.forEach(function(curWord) {
+                            if(preWord === curWord) equalWords +=1;
+                        });
+                    });
+                    if(equalWords >= maxWords * 0.5) {
+                        descriptionData.usage += 1;
+                        add = false;
+                        break;
+                    } else {
+                        add = true;
+                    }
+                }
+            }
+            if(add) {
+                descriptionsArray.push({
+                    text: description,
+                    usage: 1,
+                    splitted: splitted
+                });
+            }
+        }
+    }
+    return descriptionsArray;
+}
+
 const elaborateSingleWallet = (walletId, wallets, types, movements, categories) => {
     let currentW = wallets[walletId];
     var common_types = {};
@@ -678,6 +737,7 @@ module.exports = {
     elaborateMonths: elaborateMonths,
     elaborateDays: elaborateDays,
     elaborateCategories: elaborateCategories,
+    elaborateDescriptions: elaborateDescriptions,
     elaborateSingleWallet: elaborateSingleWallet,
     elaborateUsableWallets: elaborateUsableWallets,
     checkRecurrentMovements: checkRecurrentMovements,

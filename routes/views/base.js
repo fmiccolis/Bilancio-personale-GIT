@@ -34,6 +34,10 @@ const baseRoutes = (app, changes) => {
     app.get('/recurrents', (req, res) => {
         res.render("pages/recurrents", {text: "Movimenti ricorrenti"});
     });
+
+    app.get('/tests', (req, res) => {
+        res.render("pages/tests");
+    });
 }
 
 module.exports = baseRoutes;

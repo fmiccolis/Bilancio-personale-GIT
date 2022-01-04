@@ -133,6 +133,25 @@ $(document).ready(function() {
             if(!lista.includes($(this).val())) $(this).hide();
         });
     });
+
+    $("#categoriaInput").change(function() {
+        var selected = $(this).find(":selected");
+        var categoryId = selected.val();
+        var date = swap($("#dataInput").val().split("-")).join("-");
+        setFrequentDescriptions(categoryId, date)
+    });
+
+    $("#dataInput").change(function() {
+        var selected = $("#categoriaInput").find(":selected");
+        var categoryId = selected.val();
+        var date = swap($(this).val().split("-")).join("-");
+        setFrequentDescriptions(categoryId, date)
+    });
+
+    $(this).on('click', ".description", function() {
+        var text = $(this).text();
+        $("#descrizioneInput").val(text);
+    });
 });
 
 function generateNavigation(elaborated) {
@@ -269,6 +288,18 @@ function visualizeMovement(list, container, options) {
         details.append(summary);
         details.append(otherInfo);
         container.append(details);
+    });
+}
+
+function setFrequentDescriptions(categoryId, date) {
+    getFrequentDescription(categoryId, date).then(data => {
+        var frequent = data.filter(obj => obj.usage > 1);
+        frequent.sort((a, b) => b.usage - a.usage);
+        var leaders = frequent.slice(0, 3);
+        $("#frequentDescription").empty();
+        leaders.forEach(function(des) {
+            $("#frequentDescription").append("<span class='badge rounded-pill bg-primary fs-6 description'>" + des.text + "</span>");
+        });
     });
 }
 

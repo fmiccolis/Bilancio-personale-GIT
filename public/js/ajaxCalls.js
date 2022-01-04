@@ -72,6 +72,14 @@ function getElaboratedCategories() {
 	});
 }
 
+function getFrequentDescription(categoryId, date) {
+    return $.ajax({
+        url: `/api/categories/getDescriptions/${categoryId}/${date}`,
+        type: "get",
+        dataType: "json"
+    });
+}
+
 function addNewCategory(newCategory) {
     return $.ajax({
         url: "/api/categories/add/",

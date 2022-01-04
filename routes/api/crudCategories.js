@@ -1,4 +1,4 @@
-const {elaborateCategories} = require('../../utils');
+const {elaborateCategories, elaborateDescriptions} = require('../../utils');
 const paths = require('../../filepaths');
 const {createCategory, updateCategory, deleteCategory} = require("../../services/categoryService");
 
@@ -60,6 +60,23 @@ const crudCategoriesRoutes = (app, fs) => {
             var movements = JSON.parse(fs.readFileSync(paths.movements, 'utf8'));
             var categories = JSON.parse(fs.readFileSync(paths.categories, 'utf8'));
             res.send(elaborateCategories(categories, movements));
+        } catch(e) {
+            console.log(e);
+            if(data.length === 0) {
+                res.send({empty: true});
+            } else {
+                res.send({error: true})
+            }
+        }
+    });
+
+    // GET DESCRIPTIONS
+    app.get(`/api/${apiTitle}/getDescriptions/:id/:date`, (req, res) => {
+        try {
+            var movements = JSON.parse(fs.readFileSync(paths.movements, 'utf8'));
+            var categoryId = req.params["id"]
+            var date = req.params["date"]
+            res.send(elaborateDescriptions(date, movements, categoryId));
         } catch(e) {
             console.log(e);
             if(data.length === 0) {
