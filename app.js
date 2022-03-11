@@ -2,6 +2,7 @@ const open = require('open');
 const session = require('express-session');
 const express = require('express');
 const bodyParser = require('body-parser');
+var cors = require('cors')  //use this
 const simpleGit = require('simple-git');
 const {checkRecurrentMovements} = require('./utils');
 
@@ -9,6 +10,8 @@ const fs = require('fs');
 
 const app = express();
 const git = simpleGit({baseDir: process.cwd(), binary: 'git', maxConcurrentProcesses: 6});
+
+app.use(cors())
 
 app.use(session({
 	secret: 'ssshhhhh',
@@ -27,7 +30,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(function (req, res, next) {
 	let time = new Date().toLocaleString("it-IT", { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-	console.log(`[${time}] chiamato ${req.originalUrl}`);
+	console.log(`[${time}] [${req.method}]\t chiamato ${req.originalUrl}`);
 	next();
 });
 
