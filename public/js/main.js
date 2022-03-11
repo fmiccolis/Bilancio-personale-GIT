@@ -89,6 +89,11 @@ const tipologiaSelect = $("#tipologia-select");
 const categoriaSelect = $("#categoria-select");
 
 var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
+var currencyColors = {
+    "EUR": "#003399",
+    "USD": "#287233",
+    "BTC": "#ffbb11"
+}
 
 $(document).ready(function() {
     fillCategories();
@@ -437,7 +442,9 @@ function setFrequentDescriptions(categoryId, date) {
             $("#frequentDescription").append("<span class='badge rounded-pill bg-primary fs-6 description'>" + des.text + "</span>");
         });
     });
-}function fillCategories() {
+}
+
+function fillCategories() {
     getElaboratedCategories().then(data => {
         if(data.hasOwnProperty("empty")) {
             console.log("vuoto");

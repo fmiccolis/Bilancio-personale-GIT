@@ -54,8 +54,9 @@ function generateWalletCards(container, walletsData) {
     for(let walletId in walletsData) {
         var wallet = walletsData[walletId];
         var validity = wallet.scadenza !== "" ? wallet.scadenza : "nessuna scadenza";
+        var currency = wallet.valuta ? wallet.valuta : "EUR"
         var col = $("<div class='col-xxl-4 col-xl-6 col-12 mb-3'></div>");
-        var card = $("<div class='card h-100 test-gradient'></div>");
+        var card = $("<div class='card h-100 test-gradient' data-ribbon='" + currency + "' style='--d:8px;--c:" + currencyColors[currency] + ";--f:10px'></div>");
         var body = $("<div class='card-body my-3'></div>");
         var innercontainer = $("<div class='container-fluid p-0'></div>");
         var topRow = $("<div class='row'></div>");
