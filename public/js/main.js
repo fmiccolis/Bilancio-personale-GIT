@@ -91,6 +91,10 @@ const categoriaSelect = $("#categoria-select");
 var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
 
 $(document).ready(function() {
+    fillCategories();
+    fillTypes();
+    fillWallets();
+
 	$("#dataInput").val((new Date()).toISOString().slice(0,10));
     getNavigation().then(data => {
         if(data.hasOwnProperty("empty")) {
@@ -152,6 +156,136 @@ $(document).ready(function() {
         var text = $(this).text();
         $("#descrizioneInput").val(text);
     });
+
+    $("#addEditMovement").on('show.bs.modal', function (event) {
+		var lineId = event.relatedTarget.id.slice(5);
+		var details = $("details[data-id='" + lineId + "']");
+		var currentModal = $(this);
+		if(details.length > 0) { //edit line
+            let dataday = details.closest("[data-day]").data("day") ? 
+                details.closest("[data-day]").data("day") : 
+                details.find("dl div").first().find("dd").text();
+            let sorgente = details.find(".sd").data("sorgente") !== "undefined" ?
+                details.find(".sd").data("sorgente") : 
+                details.closest(".tab-pane").attr("id").slice(-1);
+            let destinazione = details.find(".sd").data("destinazione") !== "undefined" ?
+                details.find(".sd").data("destinazione") : 
+                details.closest(".tab-pane").attr("id").slice(-1);
+			currentModal.find("[name='data']").val(swap(dataday.split("/")).join("-"));
+			currentModal.find("[name='importo']").val(details.find(".importo").data("importo"));
+			currentModal.find("[name='tipologia']").val(details.data("tipologiaid"));
+			currentModal.find("[name='categoria']").val(details.find(".categoria").data("categoria"));
+			currentModal.find("[name='sorgente']").val(sorgente);
+			currentModal.find("[name='destinazione']").val(destinazione);
+			currentModal.find("[name='descrizione']").val(details.find(".descrizione").text());
+			currentModal.find("[name='codice']").val(details.find(".codice").text());
+			currentModal.find("[name='collegato']").val(details.find(".codice").data("collegato"));
+			$("#addEditMovementTitle").text("Modifica Movimento (ID="+lineId+")");
+			$("#editLine").show();
+			$("#addNewLine").hide();
+			currentModal.find(".hiddenId").val(lineId);
+		} else { //add line
+			$("#addEditMovementTitle").text("Nuovo Movimento");
+			currentModal.find(".form-control, .form-select").val("");
+			currentModal.find("#dataInput").val((new Date()).toISOString().slice(0,10));
+			$("#editLine").hide();
+			$("#addNewLine").show();
+			currentModal.find(".hiddenId").val("");
+		}
+        $("#tipologiaInput").trigger("change");
+	});
+
+	$("#editLine").click(function () {
+		var lineId = $(this).closest(".modal-content").find(".hiddenId").val();
+		var data = $("#dataInput").val();
+		var importo = $("#importoInput").val();
+		var tipologia = $("#tipologiaInput").val();
+		var categoria = $("#categoriaInput").val();
+		var sorgente = $("#sorgenteInput").val();
+		var destinazione = $("#destinazioneInput").val();
+		var descrizione = $("#descrizioneInput").val();
+		var codice = $("#codiceInput").val();
+		var collegato = $("#collegatoInput").val();
+		var newLine = {
+			data: swap(data.split("-")).join("/"),
+			importo: parseFloat(importo),
+			tipologiaId: tipologia,
+			categoriaId: categoria,
+			sorgente: sorgente,
+			destinazione: destinazione,
+			descrizione: descrizione,
+			codice: codice,
+			collegato: collegato
+		}
+		editLine(newLine, lineId).then(response => {
+			window.location.reload();
+		});
+	});
+
+	$("#detailLine").on('show.bs.modal', function (event) {
+		var lineId = event.relatedTarget.id.slice(7);
+        var detailModal = $(this);
+		detailLine(lineId).then(response => {
+			console.log(response);
+            var chartData = {
+                labels: ["IN", "OUT"],
+                datasets: [{
+                  label: "pareggio",
+                  data: [response.stream.in, response.stream.out],
+                  backgroundColor: ["green", "red"],
+                  hoverOffset: 4
+                }]
+            };
+            var chartConfig = {
+                type: 'doughnut',
+                data: chartData,
+                options: options
+            };
+            chart = new Chart(detailModal.find("#chartLinked"), chartConfig);
+            visualizeMovement(
+                [response.master], 
+                detailModal.find("#masterMovement"), 
+                {
+                    showData: true, 
+                    showActions: false,
+                    readClass: true
+                },
+                []
+            )
+            visualizeMovement(
+                response.slaves, 
+                detailModal.find("#slaveMovements"), 
+                {
+                    showData: true, 
+                    showActions: false,
+                    readClass: true
+                },
+                []
+            )
+		});
+	});
+
+	$("#deleteThisLine").click(function () {
+		var lineId = $("#dataTodelete").find(".hiddenId").val();
+		deleteLine(lineId).then(response => {
+			window.location.reload();
+		});
+	});
+
+	$("#deleteLine").on('show.bs.modal', function (event) {
+		var lineId = event.relatedTarget.id.slice(7);
+		var tr = $("tr[data-id='" + lineId + "']");
+		var table = tr.closest("table").clone();
+		table.find("tbody").find("tr").not("[data-id='" + lineId + "']").remove();
+		table.find("tr").find("td:last-child, th:last-child").remove();
+		table.find("tr").first().prepend($("<th scope='col' style='text-align: center;'>data</th>"));
+		table.find("tr").last().prepend($("<td>" + tr.closest(".accordion-item").data("day") + "</td>"));
+		var dataTodelete = $("#dataTodelete");
+		dataTodelete.empty();
+		dataTodelete.append(table);
+		dataTodelete.append($("<input type='hidden' class='hiddenId' value='" + lineId + "' />"));
+		$("[data-bs-toggle='tooltip']").tooltip();
+	});
 });
 
 function generateNavigation(elaborated) {
@@ -242,7 +376,7 @@ function generateChart(categories, param, chart, type, datasetName, container) {
     chart = new Chart(element, chartConfig);
 }
 
-function visualizeMovement(list, container, options) {
+function visualizeMovement(list, container, options, masterCodes) {
     list.forEach(function (rowData) {
         var details = $("<details data-id='" + rowData.id + "' data-tipologia='" + rowData.tipologia.nome + "' data-tipologiaid='" + rowData.tipologiaId + "' data-categoria='" + rowData.categoria.nome + "'></details>");
         var summary = $("<summary></summary>");
@@ -271,15 +405,17 @@ function visualizeMovement(list, container, options) {
         masterInfo.append(h4);
         masterInfo.append(importo);
         summary.append(masterInfo);
+        var collegato = rowData.collegato ? rowData.collegato : '';
         var dl = $("<dl></dl>");
         var dataMovement = $("<div><dt>Data</dt><dd>" + rowData.data + "</dd></div>");
-        var portafoglio = $("<div><dt class='sd' data-sorgente='" + rowData.sorgente.id + "' data-destinazione='" + rowData.destinazione.id + "'>Portafoglio</dt><dd>" + nomePortafoglio + "</dd></div>");
-        var codice = $("<div><dt>Codice</dt><dd class='codice'>" + rowData.codice + "</dd></div>");
+        var portafoglio = $("<div><dt class='sd' data-sorgente='" + (rowData.sorgente.id ? rowData.sorgente.id : rowData.sorgente) + "' data-destinazione='" + (rowData.destinazione.id ? rowData.destinazione.id : rowData.destinazione) + "'>Portafoglio</dt><dd>" + nomePortafoglio + "</dd></div>");
+        var codice = $("<div><dt>Codice</dt><dd class='codice' data-collegato=" + collegato + ">" + rowData.codice + "</dd></div>");
         
         let editB = $("<span class='action px-1' id='edit-" + rowData.id + "' data-bs-toggle='modal' data-bs-target='#addEditMovement' style='color: gold'><i class='fas fa-edit fa-fw'></i></span>");
         let deleteB = $("<span class='action px-1' id='delete-" + rowData.id + "' data-bs-toggle='modal' data-bs-target='#deleteLine' style='color: tomato'><i class='fas fa-trash-alt fa-fw'></i></span>");
+        let detailB = $("<span class='action px-1' id='detail-" + rowData.id + "' data-bs-toggle='modal' data-bs-target='#detailLine' style='color: #2e4ae2'><i class='fas fa-info-circle fa-fw'></i></span>");
         var actions = $("<div><dt>Azioni</dt><dd></dd></div>");
-        actions.find("dd").append(editB, deleteB);
+        actions.find("dd").append(editB, deleteB, masterCodes.indexOf(rowData.codice) !== -1 ? detailB : null);
         if(options.showData) dl.append(dataMovement);
         dl.append(portafoglio);
         dl.append(codice);
@@ -301,6 +437,62 @@ function setFrequentDescriptions(categoryId, date) {
             $("#frequentDescription").append("<span class='badge rounded-pill bg-primary fs-6 description'>" + des.text + "</span>");
         });
     });
+}function fillCategories() {
+    getElaboratedCategories().then(data => {
+        if(data.hasOwnProperty("empty")) {
+            console.log("vuoto");
+        } else if(data.hasOwnProperty("error")) {
+            console.log("errore");
+        } else {
+            data.forEach(function(cate) {
+                $("#categoriaInput").append($("<option value='" + cate.id + "'>" + cate.name + "</option>"));
+            });
+        }
+    });
+}
+
+function fillTypes() {
+    getTypes().then(data => {
+        if(data.hasOwnProperty("empty")) {
+            console.log("vuoto");
+        } else if(data.hasOwnProperty("error")) {
+            console.log("errore");
+        } else {
+            for(let idx in data) {
+                var currentType = data[idx];
+                $("#tipologiaInput").append($("<option value='" + idx + "' data-sorgente='" + currentType.sorgente + "' data-destinazione='" + currentType.destinazione + "' data-lista='" + currentType.lista + "'>" + currentType.nome + "</option>"));
+            }
+        }
+    });
+}
+
+function fillWallets() {
+    getWallets().then(data => {
+        if(data.hasOwnProperty("empty")) {
+            console.log("vuoto");
+        } else if(data.hasOwnProperty("error")) {
+            console.log("errore");
+        } else {
+            for(let idx in data) {
+                var walletDOM = $("<option value='" + idx + "'>" + data[idx].nome + "</option>");
+                if(data[idx].utilizzabile) $("#sorgenteInput").append(walletDOM);
+                $("#destinazioneInput").append(walletDOM.clone());
+            }
+        }
+    });
+}
+
+function updateCategoriaSelect(categories) {
+    //console.log(categories);
+    categoriaSelect.empty();
+    categoriaSelect.append($("<option selected value='base'>Seleziona la categoria</option>"));
+    for(var type in categories) {
+        var group = $("<optgroup label='" + type + "'></optgroup>");
+        categories[type].forEach(function (category) {
+            group.append($("<option value='" + category.name + "'>" + category.name + "</option>"));
+        });
+        categoriaSelect.append(group);
+    }
 }
 
 function getDaysInMonth(month, year) {

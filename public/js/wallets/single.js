@@ -59,9 +59,10 @@ function generateWalletAccordions(container, wallet) {
             tabPanel, 
             {
                 showData: true, 
-                showActions: false,
+                showActions: true,
                 readClass: true
-            }
+            },
+            wallet.masterCodes
         );
         contents.append(tabPanel);
         tabs.append(tabButton);

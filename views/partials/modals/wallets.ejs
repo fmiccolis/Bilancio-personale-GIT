@@ -63,3 +63,129 @@
       </div>
     </div>
 </div>
+
+<div class="modal fade" id="addEditMovement" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEditMovementTitle">Nuovo movimento</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type='hidden' class='hiddenId' value='' />
+          <input type='hidden' id='codiceInput' class='codice' name='codice' value='' />
+          <div class="continer-fluid">
+              <div class="row">
+                  <div class="col-md-6 col-12 mb-3">
+                      <label for="dataInput" class="form-label">Data</label>
+                      <input type="date" name="data" class="form-control" id="dataInput" aria-describedby="dataHelp">
+                      <div id="dataHelp" class="form-text">Scegli la data che verrà poi accoppiata insieme alle altre dello stesso mese e anno.</div>
+                  </div>
+                  <div class="col-md-6 col-12 mb-3">
+                    <label for="importoInput" class="form-label">Importo</label>
+                    <input type="number" name="importo" class="form-control importo" id="importoInput" aria-describedby="importoHelp">
+                    <div id="importoHelp" class="form-text">Inserisci l'importo dell'entrata o dell'uscita utilizzando il punto come separatore delle virgole.</div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-6 col-12 mb-3">
+                    <label for="tipologiaInput" class="form-label">Tipologia</label>
+                    <select class="form-select" id="tipologiaInput" name="tipologia" aria-label="Tipologia select" aria-describedby="tipologiaHelp"></select>
+                    <div id="tipologiaHelp" class="form-text">Scegli la tipologia del nuovo inserimento.</div>
+                  </div>
+                  <div class="col-md-6 col-12 mb-3">
+                      <label for="categoriaInput" class="form-label">Categoria</label>
+                      <select class="form-select" id="categoriaInput" name="categoria" aria-label="Categoria select" aria-describedby="categoriaHelp"></select>
+                      <div id="categoriaHelp" class="form-text">Scegli la categoria.</div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-6 col-12 mb-3">
+                    <label for="sorgenteInput" class="form-label">Sorgente</label>
+                    <select class="form-select" id="sorgenteInput" name="sorgente" aria-label="Sorgente select" aria-describedby="sorgenteHelp">
+                      <option value="external" selected>Esterno</option>
+                    </select>
+                    <div id="sorgenteHelp" class="form-text">La sorgente del movimento.</div>
+                  </div>
+                  <div class="col-md-6 col-12 mb-3">
+                    <label for="destinazioneInput" class="form-label">Destinazione</label>
+                    <select class="form-select" id="destinazioneInput" name="destinazione" aria-label="Destinazione select" aria-describedby="destinazioneHelp">
+                      <option value="external" selected>Esterno</option>
+                    </select>
+                    <div id="destinazioneHelp" class="form-text">La destinazione del movimento.</div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-12 mb-3">
+                    <label for="descrizioneInput" class="form-label">Descrizione</label>
+                    <div id="frequentDescription"></div>
+                    <textarea rows="3" name="descrizione" class="form-control" id="descrizioneInput" aria-describedby="descrizioneHelp"></textarea>
+                    <div id="descrizioneHelp" class="form-text">Scegli una descrizione per questo nuovo inserimento.</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <label for="collegatoInput" class="form-label">Movimento collegato</label>
+                  <input type="text" name="collegato" class="form-control collegato" id="collegatoInput" aria-describedby="collegatoHelp">
+                  <div id="collegatoHelp" class="form-text">Inserisci il codice di un altro movimento per collegarlo ad esso.<br>Utile nel caso si voglia tenere d'occhio un prestito o un anticipazione di soldi a qualcuno</div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <button type="submit" id="addNewLine" class="btn btn-primary">Invia</button>
+          <button type="submit" id="editLine" class="btn btn-warning" style="display: none;">Modifica</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteLine" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sei sicuro di voler eliminare questa riga?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label">L'eliminazione della riga comporterà una variazione nella tabella corrente, nei grafici e in tutte le tabella generate</label>
+          <div id="dataTodelete"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <button type="submit" id="deleteThisLine" class="btn btn-danger">Elimina</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailLine" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Dettagli del movimento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="continer-fluid">
+          <div class="row">
+            <div class="col-md-6 col-12 mb-3">
+              <canvas class="my-4 w-100" id="chartLinked"></canvas>
+            </div>
+            <div class="col-md-6 col-12 mb-3">
+              <label for="collegatoInput" class="form-label">Movimento principale</label>
+              <div id="masterMovement"></div>
+              <hr>
+              <label for="collegatoInput" class="form-label">Movimenti collegati</label>
+              <div id="slaveMovements"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>

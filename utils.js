@@ -176,12 +176,15 @@ const elaborateDataSlimDay = (movements, types, categories, wallets, year, month
     var monthData = {
         dates: {},
         categories: getTypeNames(types, "array", all),
-        totals: getTypeNames(types, 0, all)
+        totals: getTypeNames(types, 0, all),
+        masterCodes: []
     };
     for(var idx in movements) {
         // prendo il movimento corrente e gli setto il suo id
         let movement = movements[idx];
         movement.id = idx;
+
+        if(movement.collegato && monthData.masterCodes.indexOf(movement.collegato) === -1) monthData.masterCodes.push(movement.collegato)
 
         // verifico che la tipologia sia una da analizzare
         let tipologia = types[movement.tipologiaId];
@@ -396,9 +399,64 @@ const elaborateDays = (movements, types, categories, wallets, year, month) => {
     var day_view = {
         headers: month_detail,
         dates: thisMonthData.dates,
-        categories: thisMonthData.categories
+        categories: thisMonthData.categories,
+        masterCodes: thisMonthData.masterCodes
     }
     return day_view;
+}
+
+const detailMovement = (movements, types, categories, wallets, movementId) => {
+    var elaborated = {
+        master: movements[movementId],
+        slaves: [],
+        stream: {
+            in: 0,
+            out: 0
+        }
+    }
+    var masterCode = elaborated.master.codice;
+    for(var idx in movements) {
+        // prendo il movimento corrente e gli setto il suo id
+        let movement = movements[idx];
+        movement.id = idx;
+
+        if(!(movement.collegato === masterCode || movement.codice === masterCode)) continue;
+
+        let tipologia = types[movement.tipologiaId];
+        tipologia.id = movement.tipologiaId;
+
+        // dal movimento estraggo la categoria, la tipologia e i portafogli interessati
+        let categoria = categories[movement.categoriaId];
+        categoria.id = movement.categoriaId;
+        let sorgente = externalwallet;
+        let destinazione = externalwallet;
+        if(movement.sorgente !== externalId) {
+            sorgente = wallets[movement.sorgente];
+            sorgente.id = movement.sorgente;
+            movement.cssClass = "";
+            elaborated.stream.out += movement.importo;
+        }
+        if(movement.destinazione !== externalId) {
+            destinazione = wallets[movement.destinazione];
+            destinazione.id = movement.destinazione;
+            movement.cssClass = "plus";
+            elaborated.stream.in += movement.importo;
+        }
+
+        // reimposto al movimento gli oggetti complessi ottenuti tramite gli id
+        movement.categoria = categoria;
+        movement.tipologia = tipologia;
+        movement.sorgente = sorgente;
+        movement.destinazione = destinazione;
+
+        if(movement.codice === masterCode) {
+            elaborated.master = movement;
+        } else {
+            elaborated.slaves.push(movement);
+        }
+    }
+
+    return elaborated;
 }
 
 const elaborateCategories = (categories, pureLines) => {
@@ -509,10 +567,13 @@ const elaborateSingleWallet = (walletId, wallets, types, movements, categories) 
         icon: currentW.icona,
         types: JSON.parse(JSON.stringify(common_types)),
         valid: currentW.scadenza !== "" ? currentW.scadenza : "nessuna scadenza",
-        utility: currentW.utilizzabile
+        utility: currentW.utilizzabile,
+        masterCodes: []
     };
     for(let idx in movements) {
         var currentLine = movements[idx];
+        currentLine.id = idx;
+        if(currentLine.collegato && elaborated.masterCodes.indexOf(currentLine.collegato) === -1) elaborated.masterCodes.push(currentLine.collegato)
         let categoria = categories[currentLine.categoriaId];
         categoria.id = currentLine.categoriaId;
         currentLine.categoria = categoria;
@@ -743,5 +804,6 @@ module.exports = {
     checkRecurrentMovements: checkRecurrentMovements,
     elaborateRecurrents: elaborateRecurrents,
     elaborateTypes: elaborateTypes,
+    detailMovement: detailMovement,
     monthNames: monthNames
 };

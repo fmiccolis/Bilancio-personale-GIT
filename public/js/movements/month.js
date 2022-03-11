@@ -16,53 +16,6 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#deleteLine").on('show.bs.modal', function (event) {
-		var lineId = event.relatedTarget.id.slice(7);
-		var tr = $("tr[data-id='" + lineId + "']");
-		var table = tr.closest("table").clone();
-		table.find("tbody").find("tr").not("[data-id='" + lineId + "']").remove();
-		table.find("tr").find("td:last-child, th:last-child").remove();
-		table.find("tr").first().prepend($("<th scope='col' style='text-align: center;'>data</th>"));
-		table.find("tr").last().prepend($("<td>" + tr.closest(".accordion-item").data("day") + "</td>"));
-		var dataTodelete = $("#dataTodelete");
-		dataTodelete.empty();
-		dataTodelete.append(table);
-		dataTodelete.append($("<input type='hidden' class='hiddenId' value='" + lineId + "' />"));
-		$("[data-bs-toggle='tooltip']").tooltip();
-	});
-
-	$("#deleteThisLine").click(function () {
-		var lineId = $("#dataTodelete").find(".hiddenId").val();
-		deleteLine(lineId).then(response => {
-			window.location.reload();
-		});
-	});
-
-	$("#editLine").click(function () {
-		var lineId = $(this).closest(".modal-content").find(".hiddenId").val();
-		var data = $("#dataInput").val();
-		var importo = $("#importoInput").val();
-		var tipologia = $("#tipologiaInput").val();
-		var categoria = $("#categoriaInput").val();
-		var sorgente = $("#sorgenteInput").val();
-		var destinazione = $("#destinazioneInput").val();
-		var descrizione = $("#descrizioneInput").val();
-		var codice = $("#codiceInput").val();
-		var newLine = {
-			data: swap(data.split("-")).join("/"),
-			importo: parseFloat(importo),
-			tipologiaId: tipologia,
-			categoriaId: categoria,
-			sorgente: sorgente,
-			destinazione: destinazione,
-			descrizione: descrizione,
-			codice: codice
-		}
-		editLine(newLine, lineId).then(response => {
-			window.location.reload();
-		});
-	});
-
 	$(this).on("click", ".day-box", function () {
 		$(".day-box").removeAttr("style");
 
@@ -136,7 +89,7 @@ function generateCalendar(accordion, day_view, year, month) {
 		week.append(day_box);
 		if(added === 7) {
 			added = 0;
-			generateMovementsBox(calendar_body, week, week_movements);
+			generateMovementsBox(calendar_body, week, week_movements, day_view.masterCodes);
 			week_movements = [];
 			week = $("<div class='week'></div>");
 		}
@@ -145,7 +98,7 @@ function generateCalendar(accordion, day_view, year, month) {
 	for(let j = 0; j < how_many_fake_boxes; j++) {
 		week.append("<div class='fake-box'></div>");
 	}
-	generateMovementsBox(calendar_body, week, week_movements)
+	generateMovementsBox(calendar_body, week, week_movements, day_view.masterCodes)
 	week_movements = [];
 	calendar.append(calendar_header);
 	calendar.append(calendar_body);
@@ -153,7 +106,7 @@ function generateCalendar(accordion, day_view, year, month) {
 	$("[data-bs-toggle='tooltip']").tooltip();
 }
 
-function generateMovementsBox(calendar_body, week, week_movements) {
+function generateMovementsBox(calendar_body, week, week_movements, masterCodes) {
 	calendar_body.append(week);
 	var movement_box = $("<div class='movement-box'></div>");
 	week_movements.forEach(function (movements) {
@@ -165,7 +118,8 @@ function generateMovementsBox(calendar_body, week, week_movements) {
 				showData: false, 
 				showActions: true,
 				readClass: false
-			}
+			},
+			masterCodes
 		);
 		movement_box.append(dayname);
 	});

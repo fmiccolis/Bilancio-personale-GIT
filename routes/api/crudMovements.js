@@ -1,4 +1,4 @@
-const {generateNavigation, elaborateYears, elaborateMonths, elaborateDays} = require('../../utils');
+const {generateNavigation, elaborateYears, elaborateMonths, elaborateDays, detailMovement} = require('../../utils');
 const paths = require('../../filepaths');
 const {createMovement, updateMovement, deleteMovement} = require("../../services/movementService");
 
@@ -8,9 +8,8 @@ const crudMovementsRoutes = (app, fs) => {
     // READ ALL
     app.get(`/api/${apiTitle}/all`, (req, res) => {
         fs.readFile(paths.movements, 'utf8', (err, data) => {
-            if (err) {
-                throw err;
-            }
+            if (err) throw err;
+            
             try {
 			    var parsed = JSON.parse(data);
                 res.send(parsed);
@@ -114,6 +113,24 @@ const crudMovementsRoutes = (app, fs) => {
     app.delete(`/api/${apiTitle}/delete/:id`, (req, res) => {
         var result = deleteMovement(req.params["id"], fs);
         res.status(200).send(result);
+    });
+
+    // DETAIL
+    app.get(`/api/${apiTitle}/detail/:id`, (req, res) => {
+        try {
+            var movements = JSON.parse(fs.readFileSync(paths.movements, 'utf8'));
+            var types = JSON.parse(fs.readFileSync(paths.types, 'utf8'));
+            var categories = JSON.parse(fs.readFileSync(paths.categories, 'utf8'));
+            var wallets = JSON.parse(fs.readFileSync(paths.wallets, 'utf8'));
+            res.send(detailMovement(movements, types, categories, wallets, req.params["id"]));
+        } catch(e) {
+            console.log(e);
+            if(data.length === 0) {
+                res.send({empty: true});
+            } else {
+                res.send({error: true})
+            }
+        }
     });
 };
 

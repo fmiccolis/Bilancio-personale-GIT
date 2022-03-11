@@ -34,8 +34,18 @@ const updateCategory = (updatedData, categoryId, fs) => {
 const deleteCategory = (categoryId, fs) => {
     try {
         var categories = JSON.parse(fs.readFileSync(paths.categories, 'utf8'));
+        var types = JSON.parse(fs.readFileSync(paths.types, 'uft-8'));
+        for(let tidx in types) {
+            var type = types[tidx];
+            var lista = type.lista;
+            var indice = lista.indexOf(categoryId)
+            if(indice > -1) {
+                lista.splice(indice, 1);
+            }
+        }
         delete categories[categoryId];
         writeFile(categories, () => {console.log("cancellato")}, paths.categories, fs);
+        writeFile(types, () => {console.log("aggiornato")}, paths.types, fs);
 
         return {deleted: true};
     } catch(e) {

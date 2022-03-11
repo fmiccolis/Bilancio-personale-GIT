@@ -56,6 +56,15 @@ function deleteLine(lineId) {
     });
 }
 
+function detailLine(lineId) {
+    return $.ajax({
+        url: `/api/movements/detail/${lineId}`,
+        type: "get",
+        dataType: "json",
+    });
+}
+
+// CATEGORY
 function getCategories() {
 	return $.ajax({
 		url: "/api/categories/all",
