@@ -29,7 +29,8 @@ $(document).ready(function() {
             icona: $("[data-w-icon]").html(),
             totale: $("[data-w-total]").val(),
             scadenza: swap($("[data-w-valid]").val().split("-")).join("/"),
-            utilizzabile: $("[data-w-utility]").is(":checked")
+            utilizzabile: $("[data-w-utility]").is(":checked"),
+            valuta: $("[data-w-valuta]").val()
         }
         editWallet(updatedWallet, walletId).then(response => {
             window.location.reload();
@@ -83,4 +84,5 @@ function populateForm(container, wallet) {
     container.find("[data-w-icon]").html(wallet.icon);
     container.find("[data-w-valid]").val(swap(wallet.valid.split("/")).join("-"));
     container.find("[data-w-utility]").prop("checked", wallet.utility);
+    container.find("[data-w-valuta]").val(wallet.currency ? wallet.currency : "EUR").change();
 }

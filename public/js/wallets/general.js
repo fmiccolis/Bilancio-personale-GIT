@@ -31,7 +31,8 @@ $(document).ready(function() {
             icona: $("#visualizzazione").html(),
             totale: $("#totaleInput").val(),
             scadenza: swap($("#scadenzaInput").val().split("-")).join("/"),
-            utilizzabile: $("#utilizzabileInput").is(":checked")
+            utilizzabile: $("#utilizzabileInput").is(":checked"),
+            valuta: $("#valutaInput").val()
         }
         addNewWallet(newWallet).then(response => {
             window.location.reload();

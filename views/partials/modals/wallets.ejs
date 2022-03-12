@@ -9,15 +9,23 @@
           <input type='hidden' class='hiddenId' value='' />
           <div class="continer-fluid">
             <div class="row">
-              <div class="col-md-6 col-12 mb-3">
+              <div class="col-md-4 col-12 mb-3">
                 <label for="nomeInput" class="form-label">Nome</label>
                 <input type="text" name="nome" class="form-control" id="nomeInput" aria-describedby="nomeHelp">
                 <div id="nomeHelp" class="form-text">Scegli il nome per il nuovo portafogli.</div>
               </div>
-              <div class="col-md-6 col-12 mb-3">
+              <div class="col-md-4 col-12 mb-3">
                 <label for="totaleInput" class="form-label">Totale</label>
                 <input type="number" name="totale" class="form-control" id="totaleInput" aria-describedby="totaleHelp">
                 <div id="totaleHelp" class="form-text">Inserisci il totale attuale di questo portafogli.</div>
+              </div>
+              <div class="col-md-4 col-12 mb-3">
+                <label for="valutaInput" class="form-label">Valuta</label>
+                <select class="form-select" id="valutaInput" name="valuta" aria-label="Valuta select" aria-describedby="valutaHelp">
+                  <option value="EUR" selected>Euro</option>
+                  <option value="BTC">Bitcoin</option>
+                </select>
+                <div id="valutaHelp" class="form-text">Inserisci il totale attuale di questo portafogli.</div>
               </div>
             </div>
             <div class="row">

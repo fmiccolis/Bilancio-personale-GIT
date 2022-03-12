@@ -1,3 +1,5 @@
+const axios = require('axios').default;
+
 const {elaborateSingleWallet, elaborateUsableWallets} = require('../../utils');
 const paths = require('../../filepaths');
 const {createWallet, updateWallet, deleteWallet} = require("../../services/walletService");
@@ -7,16 +9,29 @@ const crudWalletsRoutes = (app, fs) => {
 
     // READ ALL
     app.get(`/api/${apiTitle}/all`, (req, res) => {
-        fs.readFile(paths.wallets, 'utf8', (err, data) => {
-            if (err) {
-                throw err;
-            }
+        fs.readFile(paths.wallets, 'utf8', async (err, data) => {
+            if (err) throw err;
+            
             try {
-			    var parsed = JSON.parse(data);
-                if(Object.keys(parsed).length == 0) {
-                    parsed = {empty: true};
+                var wallets = JSON.parse(fs.readFileSync(paths.wallets, 'utf8'));
+                var knownRates = {};
+                var processed = {};
+                var defaultCurrency = "EUR"; // da sostituire in futuro con una configurabile
+                for(let widx in wallets) {
+                    let wallet = wallets[widx];
+                    if(wallet.valuta && wallet.valuta !== defaultCurrency) {
+                        if(!knownRates.hasOwnProperty(wallet.valuta)) {
+                            let {data} = await axios.get(`https://bitpay.com/rates/${wallet.valuta}/${defaultCurrency}`).then(({data}) => data);
+                            knownRates[wallet.valuta] = data.rate;
+                        }
+    
+                        wallet.totale = wallet.totale * knownRates[wallet.valuta]
+                    }
+
+                    processed[widx] = wallet;
                 }
-                res.send(parsed);
+                
+                res.send(processed);
             } catch(e) {
                 console.log(e);
                 if(data.length === 0) {

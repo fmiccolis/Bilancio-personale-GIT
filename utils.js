@@ -568,6 +568,7 @@ const elaborateSingleWallet = (walletId, wallets, types, movements, categories) 
         types: JSON.parse(JSON.stringify(common_types)),
         valid: currentW.scadenza !== "" ? currentW.scadenza : "nessuna scadenza",
         utility: currentW.utilizzabile,
+        currency: currentW.valuta,
         masterCodes: []
     };
     for(let idx in movements) {
