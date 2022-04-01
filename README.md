@@ -28,7 +28,7 @@ At this point, you may be wondering why you put everything in the Google Drive f
 ~~~~
 cd /storage/emulated/0/sync && node /storage/emulated/0/sync/app.js
 ~~~~
-15. at this point you can close the termux app and go the the home pf your phone
+15. at this point you can close the termux app and go the the home of your phone
 16. open the widget selector and search for "Termux shortcut" or "Termux widget" (Depending on your smartphone, you may see one or both of them)
 17. In the case you choose "Termux shortcut" on the placing you will see a page to choose the command to run, choose `startnode.sh`
 18. In the other case you will see a "table" listing all command stored in `~/.shortcuts/`
