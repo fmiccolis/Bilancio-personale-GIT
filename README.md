@@ -23,8 +23,8 @@ At this point, you may be wondering why you put everything in the Google Drive f
 10. Open Termux and run `termux-setup-storage` and give the permissions
 11. run `apt update` and `apt upgrade` to update the mirrors
 12. Once finished run `pkg install nodejs-lts` to download and install nodejs on your smartphone
-13. go to the shortcuts folder using the command `cd ~/.shortcuts/` then create a file called `startnode.sh`
-14. in this file copy this command and save
+13. create the shortcuts folder using the command `mkdir ~/.shortcuts/` then go inside with the command `cd ~/.shortcuts/` and create a file with `nano startnode.sh`
+14. in this file copy this command and save (`sync` is the name of the folder created in point 7)
 ~~~~
 cd /storage/emulated/0/sync && node /storage/emulated/0/sync/app.js
 ~~~~
