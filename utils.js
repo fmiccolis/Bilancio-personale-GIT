@@ -314,8 +314,13 @@ const elaborateYears = (movements, types, categories) => {
     var year_view = {
         headers: vision_detail,
         list: [],
+        footer: {},
         categories: {}
     }
+
+    var date_number = getDateCode(new Date());
+    var total_footer_input = 0;
+
     elaborated.list.forEach(function(yearData) {
         let month_avarage_spent = yearData.totals["uscita"]/yearData.list.length;
         let total_spent_projection_month = month_avarage_spent*12;
@@ -324,9 +329,21 @@ const elaborateYears = (movements, types, categories) => {
         let sum_avarage_saving_rate = 0;
         yearData.list.forEach(function(monthData) {
             let current_saving = monthData.totals["entrata"]-monthData.totals["uscita"];
-            sum_avarage_daily += getDailyAverage(monthData.month, yearData.year, monthData.totals["uscita"]);
+            let current_daily_average = getDailyAverage(monthData.month, yearData.year, monthData.totals["uscita"]);
+            sum_avarage_daily += current_daily_average;
             sum_avarage_saving += current_saving;
-            sum_avarage_saving_rate += current_saving/monthData.totals["entrata"];
+            let current_saving_rate = current_saving/monthData.totals["entrata"]
+            sum_avarage_saving_rate += current_saving_rate;
+
+            let current_date_number = parseInt(yearData.year + "" + ((monthData.month + 1).toString().padStart(2, "0")), 10);
+            if(current_date_number > date_number) {
+                total_footer_input++;
+                year_view.footer.totalSpent = year_view.footer.totalSpent ? year_view.footer.totalSpent + monthData.totals["uscita"] : monthData.totals["uscita"];
+                year_view.footer.sum_daily_avarage = year_view.footer.sum_daily_avarage ? year_view.footer.sum_daily_avarage + current_daily_average : current_daily_average;
+                year_view.footer.totalEarned = year_view.footer.totalEarned ? year_view.footer.totalEarned + monthData.totals["entrata"] : monthData.totals["entrata"];
+                year_view.footer.average_saving = year_view.footer.average_saving ? year_view.footer.average_saving + current_saving : current_saving;
+                year_view.footer.sum_average_saving_rate = year_view.footer.sum_average_saving_rate ? year_view.footer.sum_average_saving_rate + current_saving_rate : current_saving_rate;
+            }
         });
         let daily_avarage = sum_avarage_daily/yearData.list.length;
         let total_spent_projection_daily = daily_avarage*getDaysInYear(yearData.year);
@@ -354,8 +371,15 @@ const elaborateYears = (movements, types, categories) => {
             saving_rate_projection: (avarage_saving_rate*100).toFixed(2) + " %",
             worst_month: worst_month
         }
+        year_view.footer.month_avarage_spent = year_view.footer.totalSpent / total_footer_input;
+        year_view.footer.month_avarage_earned = year_view.footer.totalEarned / total_footer_input;
+        year_view.footer.month_saving_avarage = year_view.footer.average_saving / total_footer_input;
+        year_view.footer.daily_avarage = year_view.footer.sum_daily_avarage / total_footer_input;
+        year_view.footer.average_saving_rate = ((year_view.footer.sum_average_saving_rate / total_footer_input) * 100).toFixed(2) + "%";
+        year_view.footer.total_footer_input = total_footer_input;
         year_view.list.push(year_elaboration);
     });
+
     year_view.categories = elaborated.categories;
     return year_view;
 }
@@ -776,6 +800,13 @@ function getTypeNames(types, value, all) {
         if(currentType.analizza || all) names[currentType.nome] = value === "array" ? [] : value
     }
     return names;
+}
+
+function getDateCode(date) {
+    year = date.getFullYear() - 2; // 2 anni prima
+    month = (date.getMonth() + 1).toString().padStart(2, "0");
+
+    return parseInt(year + month, 10);
 }
 
 const formatter = new Intl.NumberFormat('it-IT', {
